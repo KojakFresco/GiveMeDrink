@@ -36,6 +36,7 @@ public class BaseView {
     public void alignCenter() {
         x = (Gdx.graphics.getWidth() - width) / 2;
     }
+
     public interface OnClickListener {
         void onClick();
     }

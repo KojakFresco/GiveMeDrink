@@ -24,8 +24,8 @@ public class ButtonView extends BaseView {
 
         isPressed = false;
         frameCounter = 0;
-        frameMultiplexer = (double )GameSettings.BUTTON_ANIMATION_FPS
-                / Gdx.graphics.getFramesPerSecond();
+        frameMultiplexer = (double) GameSettings.BUTTON_ANIMATION_FPS
+                / 60;
     }
 
 
@@ -35,13 +35,15 @@ public class ButtonView extends BaseView {
         else {
             batch.draw(textureList.get((int) (frameCounter * frameMultiplexer)), x, y, width, height);
             frameCounter = frameCounter + 1;
-            if (frameCounter * frameMultiplexer >= textureList.size()) onClickListener.onClick();
+            if (frameCounter * frameMultiplexer >= textureList.size()) {
+                onClickListener.onClick();
+            }
         }
     }
 
     @Override
     public boolean isHit(int tx, int ty) {
-        if (super.isHit(tx, ty) && !isPressed) {
+        if (tx > x && tx < x + width && ty > y && ty < y + height && !isPressed) {
             isPressed = true;
         }
         return false;

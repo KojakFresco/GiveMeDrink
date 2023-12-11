@@ -15,7 +15,7 @@ public class MyGdxGame extends Game {
 	public SpriteBatch batch;
 	public OrthographicCamera camera;
 	public FitViewport viewport;
-	public Vector2 touch;
+	public Vector3 touch;
 
 	public MenuScreen menuScreen;
 	public GameScreen gameScreen;
@@ -23,6 +23,7 @@ public class MyGdxGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		touch = new Vector3();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.setToOrtho(false);
 		viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
@@ -30,7 +31,7 @@ public class MyGdxGame extends Game {
 		menuScreen = new MenuScreen(this);
 		gameScreen = new GameScreen(this);
 
-		setScreen(gameScreen);
+		setScreen(menuScreen);
 
 	}
 

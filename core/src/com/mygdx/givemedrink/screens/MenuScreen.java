@@ -1,7 +1,9 @@
 package com.mygdx.givemedrink.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.views.ButtonView;
@@ -19,7 +21,7 @@ public class MenuScreen extends ScreenAdapter {
         viewArray = new ArrayList<>();
 
         ArrayList<String> playButtonAnimation = new ArrayList<>();
-        for (int i = 0; i < 5; ++i) playButtonAnimation.add("tiles/buttons/play" + i + ".png");
+        for (int i = 0; i < 5; ++i) playButtonAnimation.add("tiles/buttons/play/play0" + (i + 1) + ".png");
 
         ButtonView playButton = new ButtonView(0, 500,
                 200, 80, playButtonAnimation);
@@ -36,6 +38,8 @@ public class MenuScreen extends ScreenAdapter {
 
         handleInput();
 
+        ScreenUtils.clear(0, 0, 0, 1);
+
         myGdxGame.batch.begin();
 
         for (BaseView view : viewArray) view.draw(myGdxGame.batch);
@@ -45,9 +49,10 @@ public class MenuScreen extends ScreenAdapter {
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            myGdxGame.touch.set(Gdx.input.getX(), Gdx.input.getY());
-            myGdxGame.viewport.unproject(myGdxGame.touch);
+            myGdxGame.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            myGdxGame.touch = myGdxGame.camera.unproject(myGdxGame.touch);
 
+            System.out.println(myGdxGame.touch.x);
             for (BaseView view : viewArray)
                 view.isHit((int) myGdxGame.touch.x, (int) myGdxGame.touch.y);
         }
