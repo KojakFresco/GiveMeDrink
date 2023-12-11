@@ -33,9 +33,7 @@ public class BaseView {
         return false;
     }
 
-    public void alignCenter() {
-        x = (Gdx.graphics.getWidth() - width) / 2;
-    }
+    public void dispose() {}
 
     public interface OnClickListener {
         void onClick();

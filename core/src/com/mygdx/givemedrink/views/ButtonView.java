@@ -41,6 +41,10 @@ public class ButtonView extends BaseView {
         }
     }
 
+    public void alignCenter() {
+        x = (Gdx.graphics.getWidth() - width) / 2;
+    }
+
     @Override
     public boolean isHit(int tx, int ty) {
         if (tx > x && tx < x + width && ty > y && ty < y + height && !isPressed) {

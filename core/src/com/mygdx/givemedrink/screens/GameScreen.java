@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.MyGdxGame;
+import com.mygdx.givemedrink.views.CharacterView;
 import com.mygdx.givemedrink.views.Glass;
 import com.mygdx.givemedrink.views.ImageView;
 
@@ -26,14 +27,19 @@ public class GameScreen extends ScreenAdapter {
 
     ArrayList<BaseView> viewArray;
     ArrayList<Glass> glassesArray;
+    ArrayList<CharacterView> charactersArray;
 
     public GameScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
         viewArray = new ArrayList<>();
         glassesArray = new ArrayList<>();
+        charactersArray = new ArrayList<>();
 
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() - 300, 550,
+
+        CharacterView character = new CharacterView(400, 700);
+
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() - 300, 500,
                 Pixmap.Format.RGB888);
         pixmap.setColor(Color.BROWN);
         pixmap.fill();
@@ -41,12 +47,15 @@ public class GameScreen extends ScreenAdapter {
         pixmap.fillRectangle(0, 0, Gdx.graphics.getWidth() - 300, 100);
         barTable = new Texture(pixmap);
 
-        ImageView burger = new ImageView(100, 500, 265 / 2, 185 / 2,
+        ImageView burger = new ImageView(100, 450, 265 / 2, 185 / 2,
                 "icons/burger0.png");
-        Glass glass = new Glass(0, 500, 98, 144);
+        Glass glass = new Glass(0, 450, 98, 144);
 
+        viewArray.add(character);
         viewArray.add(glass);
         viewArray.add(burger);
+
+        charactersArray.add(character);
 
         glassesArray.add(glass);
 
@@ -60,6 +69,7 @@ public class GameScreen extends ScreenAdapter {
         accelerometerY = Gdx.input.getAccelerometerY() - startAccelerometerY;
 
         for (Glass glass : glassesArray) glass.move(accelerometerY);
+        for (CharacterView character : charactersArray) character.move();
 
         ScreenUtils.clear(0.3f, 0.2f, 0.2f, 1);
 

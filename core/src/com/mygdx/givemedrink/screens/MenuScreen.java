@@ -1,7 +1,6 @@
 package com.mygdx.givemedrink.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
@@ -21,11 +20,14 @@ public class MenuScreen extends ScreenAdapter {
         viewArray = new ArrayList<>();
 
         ArrayList<String> playButtonAnimation = new ArrayList<>();
-        for (int i = 0; i < 5; ++i) playButtonAnimation.add("tiles/buttons/play/play0" + (i + 1) + ".png");
+        for (int i = 0; i < 5; ++i)
+            playButtonAnimation.add("tiles/buttons/play/play0" + (i + 1) + ".png");
+        ArrayList<String> exitButtonAnimation = new ArrayList<>();
 
         ButtonView playButton = new ButtonView(0, 500,
-                200, 80, playButtonAnimation);
+                300, 120, playButtonAnimation);
 
+        //TODO: add exitButton
 
         playButton.setOnClickListener(onPlayButtonClicked);
 
