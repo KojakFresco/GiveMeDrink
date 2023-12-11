@@ -1,35 +1,49 @@
 package com.mygdx.givemedrink.views;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.givemedrink.utils.GameSettings;
 
 import java.util.ArrayList;
 
 public class ButtonView extends BaseView {
 
     boolean isPressed;
+    int frameCounter;
+    double frameMultiplexer;
 
     ArrayList<Texture> textureList;
-    public ButtonView(int x, int y, int width, int height) {
+    public ButtonView(int x, int y, int width, int height, ArrayList<String> pathList) {
         super(x, y, width, height);
 
+        textureList = new ArrayList<>();
+
+        for (String path : pathList) textureList.add(new Texture(path));
+
         isPressed = false;
+        frameCounter = 0;
+        frameMultiplexer = (double )GameSettings.BUTTON_ANIMATION_FPS
+                / Gdx.graphics.getFramesPerSecond();
     }
 
 
     @Override
     public void draw(SpriteBatch batch) {
         if (!isPressed) batch.draw(textureList.get(0), x, y, width, height);
-        else doAnimation();
+        else {
+            batch.draw(textureList.get((int) (frameCounter * frameMultiplexer)), x, y, width, height);
+            frameCounter = frameCounter + 1;
+            if (frameCounter * frameMultiplexer >= textureList.size()) onClickListener.onClick();
+        }
     }
 
     @Override
     public boolean isHit(int tx, int ty) {
-        return super.isHit(tx, ty);
-
-    }
-
-    public void doAnimation() {
+        if (super.isHit(tx, ty) && !isPressed) {
+            isPressed = true;
+        }
+        return false;
     }
 }

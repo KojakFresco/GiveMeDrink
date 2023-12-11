@@ -1,19 +1,31 @@
 package com.mygdx.givemedrink;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.screens.MenuScreen;
 
 public class MyGdxGame extends Game {
 	public SpriteBatch batch;
+	public OrthographicCamera camera;
+	public FitViewport viewport;
+	public Vector2 touch;
 
-	MenuScreen menuScreen;
-	GameScreen gameScreen;
+	public MenuScreen menuScreen;
+	public GameScreen gameScreen;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.setToOrtho(false);
+		viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
 		menuScreen = new MenuScreen(this);
 		gameScreen = new GameScreen(this);
