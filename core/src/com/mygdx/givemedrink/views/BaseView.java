@@ -19,6 +19,11 @@ public class BaseView {
         this.height = height;
     }
 
+    public BaseView(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }

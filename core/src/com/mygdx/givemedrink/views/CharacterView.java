@@ -3,22 +3,30 @@ package com.mygdx.givemedrink.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.mygdx.givemedrink.CharacterAnimations;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.CharacterState;
 import com.mygdx.givemedrink.utils.GameSettings;
+import com.mygdx.givemedrink.utils.Glass;
+import com.mygdx.givemedrink.utils.SitPlace;
 
 import java.util.ArrayList;
 
 public class CharacterView extends BaseView {
 
     CharacterState characterState;
+    SitPlace sitPlace;
+    Glass neededGlass;
 
     ArrayList<Texture> walkingLeftTextureList;
+    ArrayList<Texture> askingTextureList;
     ArrayList<Texture> sittingTextureList;
     ArrayList<Texture> walkingRightTextureList;
 
+    LabelView text;
 
+    long talkStart;
 
     int frameCounter;
     double frameMultiplexer;
@@ -27,17 +35,19 @@ public class CharacterView extends BaseView {
         super(Gdx.graphics.getWidth(), GameSettings.FLOOR_HEIGHT, width, height);
 
         walkingLeftTextureList = new ArrayList<>();
+        askingTextureList = new ArrayList<>();
         sittingTextureList = new ArrayList<>();
         walkingRightTextureList = new ArrayList<>();
 
-        ArrayList<ArrayList<String>> characterPathList =
-                MyGdxGame.characterAnimations.charactersPathsList.get(
-                        MathUtils.random(0, MyGdxGame.characterAnimations.charactersPathsList.size() - 1));
+        ArrayList<ArrayList<String>> characterPathList = CharacterAnimations.randomCharacter();
+
         for (String path : characterPathList.get(0)) walkingLeftTextureList.add(new Texture(path));
-        for (String path : characterPathList.get(1)) sittingTextureList.add(new Texture(path));
-        for (String path : characterPathList.get(2)) walkingRightTextureList.add(new Texture(path));
+        for (String path : characterPathList.get(1)) askingTextureList.add(new Texture(path));
+        for (String path : characterPathList.get(2)) sittingTextureList.add(new Texture(path));
+        for (String path : characterPathList.get(3)) walkingRightTextureList.add(new Texture(path));
 
         characterState = CharacterState.IS_WALKING_LEFT;
+        sitPlace = SitPlace.randomPlace();
         frameCounter = 0;
         frameMultiplexer = (double) GameSettings.CHARACTER_ANIMATION_FPS / 60;
 
@@ -50,6 +60,17 @@ public class CharacterView extends BaseView {
                     x, y, width, height);
             frameCounter = (int) ((frameCounter + 1) %
                     (walkingLeftTextureList.size() / frameMultiplexer));
+        }
+        else if (characterState == CharacterState.IS_ASKING) {
+            text.draw(batch);
+            batch.draw(askingTextureList.get((int) (frameCounter * frameMultiplexer)),
+                    x, y, width, height);
+            frameCounter = (int) ((frameCounter + 1) %
+                    (askingTextureList.size() / frameMultiplexer));
+            if (TimeUtils.millis() - talkStart >= 5000) {
+                text.dispose();
+                characterState = CharacterState.IS_SITTING;
+            }
         }
         else if (characterState == CharacterState.IS_SITTING) {
             batch.draw(sittingTextureList.get((int) (frameCounter * frameMultiplexer)),
@@ -68,8 +89,28 @@ public class CharacterView extends BaseView {
     public void move() {
         if (characterState == CharacterState.IS_WALKING_LEFT) {
             x -= GameSettings.CHARACTER_SPEED;
-            if (x <= 400) characterState = CharacterState.IS_SITTING;
+            if (x <= sitPlace.placeX) {
+                characterState = CharacterState.IS_ASKING;
+                talkStart = TimeUtils.millis();
+                text = new LabelView(x, y + height + 50, MyGdxGame.talkFont.bitmapFont,
+                        "give me drink!");
+            }
+
         }
+        else if (characterState == CharacterState.IS_WALKING_RIGHT) {
+            x += GameSettings.CHARACTER_SPEED;
+            if (x >= Gdx.graphics.getWidth()) this.dispose();
+        }
+    }
+
+    public boolean getGlass(GlassView glass) {
+        if (glass.x >= x && glass.x + glass.width <= x + width
+                && glass.isStopped && characterState == CharacterState.IS_SITTING
+                && neededGlass == glass.glass) {
+            characterState = CharacterState.IS_WALKING_RIGHT;
+            return true;
+        }
+        return false;
     }
 
     @Override
