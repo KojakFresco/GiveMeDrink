@@ -27,6 +27,10 @@ public class LabelView extends BaseView {
         this.y += height;
     }
 
+    public void alignCenter(int center) {
+        x = center - width / 2;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -34,9 +38,5 @@ public class LabelView extends BaseView {
     @Override
     public void draw(SpriteBatch spriteBatch) {
         font.draw(spriteBatch, message, x, y);
-    }
-
-    @Override
-    public void dispose() {
     }
 }

@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class CharacterView extends BaseView {
 
     CharacterState characterState;
-    SitPlace sitPlace;
+    public SitPlace sitPlace;
     public Drink neededDrink;
-    public boolean glassSpawned;
+    public boolean orderAccepted;
     public boolean isOut;
 
     ArrayList<Texture> walkingLeftTextureList;
@@ -53,8 +53,9 @@ public class CharacterView extends BaseView {
         neededDrink = Drink.randomDrink();
         frameCounter = 0;
         frameMultiplexer = (double) GameSettings.CHARACTER_ANIMATION_FPS / 60;
-        glassSpawned = false;
+        orderAccepted = false;
         isOut = false;
+        sitPlace.isOccupied = true;
 
     }
 
@@ -95,11 +96,11 @@ public class CharacterView extends BaseView {
         if (characterState == CharacterState.IS_WALKING_LEFT) {
             x -= GameSettings.CHARACTER_SPEED;
             if (x <= sitPlace.placeX) {
-                SitPlace.changeOccupation(sitPlace, true);
                 characterState = CharacterState.IS_ASKING;
                 talkStart = TimeUtils.millis();
                 text = new LabelView(x, y + height + 50, MyGdxGame.talkFont.bitmapFont,
                         "give me " + neededDrink.drinkName);
+                text.alignCenter(x + width / 2);
             }
 
         }
@@ -117,7 +118,6 @@ public class CharacterView extends BaseView {
         if (glass.x >= x - 30 && glass.x + glass.width <= x + width + 30
                 && glass.isStopped && characterState == CharacterState.IS_SITTING
                 && neededDrink == glass.drink) {
-            SitPlace.changeOccupation(sitPlace, false);
             characterState = CharacterState.IS_WALKING_RIGHT;
             return true;
         }

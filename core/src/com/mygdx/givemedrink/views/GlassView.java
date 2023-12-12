@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.givemedrink.utils.Drink;
+import com.mygdx.givemedrink.utils.GameSettings;
 
 public class GlassView extends BaseView {
 
-    Drink drink;
+    public Drink drink;
 
     boolean isFalling;
     boolean isStopped;
@@ -34,12 +35,16 @@ public class GlassView extends BaseView {
     }
 
     public void move(double accelerometerY) {
-        //TODO: add better glass physics
-        // a = g*(sin(alpha) +- mu*cos(alpha))
+        double alpha = accelerometerY * Math.PI / 20;
+        System.out.println(alpha);
         if (!isFalling && !isStopped) {
-            if (accelerometerY >= 1)
-                velocityX += accelerometerY / 15;
-            else if (accelerometerY <= 0 && velocityX > 0) velocityX += accelerometerY / 15;
+            if (alpha >= Math.PI / 20)
+                velocityX += 9.8 *
+                        (Math.sin(alpha) - GameSettings.FRICTION_FACTOR * Math.cos(alpha)) / 60;
+            else if (alpha < 0 && velocityX > 0) {
+                velocityX += 9.8 *
+                        (Math.sin(alpha) + GameSettings.FRICTION_FACTOR * Math.cos(alpha)) / 60;
+            }
             else if (velocityX < 0) {
                 velocityX = 0;
                 isStopped = true;
@@ -52,6 +57,7 @@ public class GlassView extends BaseView {
             velocityY = 0;
             isFalling = false;
         }
+        //TODO: better falling physics
 
         x += velocityX;
         y += velocityY;

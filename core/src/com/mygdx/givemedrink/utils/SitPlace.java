@@ -26,8 +26,4 @@ public enum SitPlace {
         }
         return sitPlaces.get(MathUtils.random(0, sitPlaces.size() - 1));
     }
-
-    public static void changeOccupation(SitPlace place, boolean isOccupied) {
-        place.isOccupied = isOccupied;
-    }
 }
