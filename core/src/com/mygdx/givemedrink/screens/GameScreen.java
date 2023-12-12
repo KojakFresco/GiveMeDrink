@@ -36,6 +36,7 @@ public class GameScreen extends ScreenAdapter {
         glassesArray = new ArrayList<>();
         charactersArray = new ArrayList<>();
 
+        //TODO: add show()
 
         CharacterView character = new CharacterView(400, 700);
 

@@ -22,6 +22,7 @@ public class Glass extends BaseView {
     }
 
     public void move(double accelerometerY) {
+        //TODO: glass physics
         if (Math.abs(accelerometerY) >= 1 && !isFalling) x += accelerometerY * 3;
         if (((x >= Gdx.graphics.getWidth() - 255) || isFalling) && y >= 0) {
             y -= 20;

@@ -27,7 +27,7 @@ public class MenuScreen extends ScreenAdapter {
         ButtonView playButton = new ButtonView(0, 500,
                 300, 120, playButtonAnimation);
 
-        //TODO: add exitButton
+        //TODO: add aboutButton
 
         playButton.setOnClickListener(onPlayButtonClicked);
 
