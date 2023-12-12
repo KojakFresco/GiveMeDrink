@@ -8,7 +8,7 @@ import com.mygdx.givemedrink.CharacterAnimations;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.CharacterState;
 import com.mygdx.givemedrink.utils.GameSettings;
-import com.mygdx.givemedrink.utils.Glass;
+import com.mygdx.givemedrink.utils.Drink;
 import com.mygdx.givemedrink.utils.SitPlace;
 
 import java.util.ArrayList;
@@ -17,7 +17,9 @@ public class CharacterView extends BaseView {
 
     CharacterState characterState;
     SitPlace sitPlace;
-    Glass neededGlass;
+    public Drink neededDrink;
+    public boolean glassSpawned;
+    public boolean isOut;
 
     ArrayList<Texture> walkingLeftTextureList;
     ArrayList<Texture> askingTextureList;
@@ -48,8 +50,11 @@ public class CharacterView extends BaseView {
 
         characterState = CharacterState.IS_WALKING_LEFT;
         sitPlace = SitPlace.randomPlace();
+        neededDrink = Drink.randomDrink();
         frameCounter = 0;
         frameMultiplexer = (double) GameSettings.CHARACTER_ANIMATION_FPS / 60;
+        glassSpawned = false;
+        isOut = false;
 
     }
 
@@ -67,7 +72,7 @@ public class CharacterView extends BaseView {
                     x, y, width, height);
             frameCounter = (int) ((frameCounter + 1) %
                     (askingTextureList.size() / frameMultiplexer));
-            if (TimeUtils.millis() - talkStart >= 5000) {
+            if (TimeUtils.millis() - talkStart >= 2000) {
                 text.dispose();
                 characterState = CharacterState.IS_SITTING;
             }
@@ -90,23 +95,29 @@ public class CharacterView extends BaseView {
         if (characterState == CharacterState.IS_WALKING_LEFT) {
             x -= GameSettings.CHARACTER_SPEED;
             if (x <= sitPlace.placeX) {
+                SitPlace.changeOccupation(sitPlace, true);
                 characterState = CharacterState.IS_ASKING;
                 talkStart = TimeUtils.millis();
                 text = new LabelView(x, y + height + 50, MyGdxGame.talkFont.bitmapFont,
-                        "give me drink!");
+                        "give me " + neededDrink.drinkName);
             }
 
         }
         else if (characterState == CharacterState.IS_WALKING_RIGHT) {
             x += GameSettings.CHARACTER_SPEED;
-            if (x >= Gdx.graphics.getWidth()) this.dispose();
+            if (x >= Gdx.graphics.getWidth()) isOut = true;
         }
     }
 
+    public boolean isSitting() {
+        return characterState == CharacterState.IS_SITTING
+                || characterState == CharacterState.IS_ASKING;
+    }
     public boolean getGlass(GlassView glass) {
-        if (glass.x >= x && glass.x + glass.width <= x + width
+        if (glass.x >= x - 30 && glass.x + glass.width <= x + width + 30
                 && glass.isStopped && characterState == CharacterState.IS_SITTING
-                && neededGlass == glass.glass) {
+                && neededDrink == glass.drink) {
+            SitPlace.changeOccupation(sitPlace, false);
             characterState = CharacterState.IS_WALKING_RIGHT;
             return true;
         }

@@ -4,16 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.givemedrink.screens.AboutScreen;
 import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.screens.MenuScreen;
 import com.mygdx.givemedrink.utils.FontHelper;
-import com.mygdx.givemedrink.views.CharacterView;
-
-import java.util.ArrayList;
 
 public class MyGdxGame extends Game {
 	public SpriteBatch batch;
@@ -24,6 +21,7 @@ public class MyGdxGame extends Game {
 	public static CharacterAnimations characterAnimations;
 
 	public MenuScreen menuScreen;
+	public AboutScreen aboutScreen;
 	public GameScreen gameScreen;
 
 	public static FontHelper talkFont;
@@ -41,6 +39,7 @@ public class MyGdxGame extends Game {
 		talkFont = new FontHelper(50, "fonts/press-start-k.ttf", Color.WHITE);
 
 		menuScreen = new MenuScreen(this);
+		aboutScreen = new AboutScreen(this);
 		gameScreen = new GameScreen(this);
 
 		setScreen(menuScreen);

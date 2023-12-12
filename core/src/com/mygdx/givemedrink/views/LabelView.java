@@ -1,6 +1,5 @@
 package com.mygdx.givemedrink.views;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,26 +31,12 @@ public class LabelView extends BaseView {
         this.message = message;
     }
 
-    public void alignCenter() {
-        x = Gdx.graphics.getWidth() / 2 - width / 2;
-    }
-
     @Override
     public void draw(SpriteBatch spriteBatch) {
         font.draw(spriteBatch, message, x, y);
     }
 
     @Override
-    public boolean isHit(int tx, int ty) {
-        if (tx > x && tx < x + width && ty > y - height && ty < y) {
-            if (onClickListener != null) onClickListener.onClick();
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void dispose() {
-        font.dispose();
     }
 }

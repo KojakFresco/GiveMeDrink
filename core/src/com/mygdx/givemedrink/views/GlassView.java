@@ -3,12 +3,11 @@ package com.mygdx.givemedrink.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.mygdx.givemedrink.utils.Glass;
+import com.mygdx.givemedrink.utils.Drink;
 
 public class GlassView extends BaseView {
 
-    Glass glass;
+    Drink drink;
 
     boolean isFalling;
     boolean isStopped;
@@ -16,12 +15,12 @@ public class GlassView extends BaseView {
 
     double velocityX;
     double velocityY;
-    public GlassView(int x, int y, int width, int height) {
-        super(x, y, width, height);
-        String pathToImage = "icons/drink" + MathUtils.random(0, 2) + ".png";
-        texture = new Texture(pathToImage);
 
-        glass = Glass.randomGlass();
+    public GlassView(int x, int y, int width, int height, Drink drink) {
+        super(x, y, width, height);
+        this.drink = drink;
+
+        texture = new Texture(drink.texturePath);
 
         isFalling = false;
         isStopped = false;
@@ -35,15 +34,17 @@ public class GlassView extends BaseView {
     }
 
     public void move(double accelerometerY) {
-         if (!isFalling && !isStopped) {
-             if (accelerometerY >= 1)
-                 velocityX += accelerometerY / 15;
-             else if (accelerometerY <= 0 && velocityX > 0) velocityX += accelerometerY / 15;
-             else if (velocityX < 0) {
-                 velocityX = 0;
-                 isStopped = true;
-             }
-         }
+        //TODO: add better glass physics
+        // a = g*(sin(alpha) +- mu*cos(alpha))
+        if (!isFalling && !isStopped) {
+            if (accelerometerY >= 1)
+                velocityX += accelerometerY / 15;
+            else if (accelerometerY <= 0 && velocityX > 0) velocityX += accelerometerY / 15;
+            else if (velocityX < 0) {
+                velocityX = 0;
+                isStopped = true;
+            }
+        }
         if (((x >= Gdx.graphics.getWidth() - 255) || isFalling) && y >= 0) {
             velocityY -= 2;
             isFalling = true;
