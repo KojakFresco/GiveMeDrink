@@ -45,7 +45,7 @@ public class SliderView extends BaseView {
         if (this.isHit((int) vector.x, (int) vector.y)) {
             this.isDragging = true;
             this.pointerImage.x = (int) (vector.x - this.pointerImage.width);
-        };
+        }
         return super.touchDown(screenX, screenY, pointer, button);
     }
 

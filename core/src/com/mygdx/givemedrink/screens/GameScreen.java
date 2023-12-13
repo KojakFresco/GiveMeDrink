@@ -113,7 +113,7 @@ public class GameScreen extends ScreenAdapter {
         gameStart = TimeUtils.millis();
         gameState = GameState.IS_PLAYING;
 
-        SoundHelper.playBackSound(0);
+        SoundHelper.playMusic(0);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
 
-            if (charactersArray.size() < 3 && TimeUtils.millis() - spawnTimer >= 2000)
+            if (charactersArray.size() < 3 && TimeUtils.millis() - spawnTimer >= 3000)
                 spawnCharacter();
 
             timerLabel.setTimer(gameTimer);

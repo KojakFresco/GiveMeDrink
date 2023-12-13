@@ -3,13 +3,15 @@ package com.mygdx.givemedrink.utils;
 import com.badlogic.gdx.math.MathUtils;
 
 public enum Drink {
-    DRINK0("icons/water.png", "water"),
-    DRINK1("icons/dobriy.png", "dobriy cola"),
-    DRINK2("icons/mors.png", "mors");
+    DRINK0(0, "icons/water.png", "water"),
+    DRINK1(1, "icons/dobriy.png", "dobriy cola"),
+    DRINK2(2, "icons/mors.png", "mors");
 
+    public final int number;
     public final String texturePath;
     public final String drinkName;
-    Drink(String texturePath, String drinkName) {
+    Drink(int number, String texturePath, String drinkName) {
+        this.number = number;
         this.texturePath = texturePath;
         this.drinkName = drinkName;
     }

@@ -1,6 +1,7 @@
 package com.mygdx.givemedrink.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -10,6 +11,7 @@ import com.mygdx.givemedrink.utils.CharacterState;
 import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.Drink;
 import com.mygdx.givemedrink.utils.SitPlace;
+import com.mygdx.givemedrink.utils.SoundHelper;
 
 import java.util.ArrayList;
 
@@ -21,10 +23,13 @@ public class CharacterView extends BaseView {
     public boolean orderAccepted;
     public boolean isOut;
 
+    ArrayList<ArrayList<String>> characterPathList;
+
     ArrayList<Texture> walkingLeftTextureList;
     ArrayList<Texture> askingTextureList;
     ArrayList<Texture> sittingTextureList;
     ArrayList<Texture> walkingRightTextureList;
+    ArrayList<Sound> soundsList;
 
     LabelView text;
 
@@ -40,13 +45,16 @@ public class CharacterView extends BaseView {
         askingTextureList = new ArrayList<>();
         sittingTextureList = new ArrayList<>();
         walkingRightTextureList = new ArrayList<>();
+        soundsList = new ArrayList<>();
 
-        ArrayList<ArrayList<String>> characterPathList = CharacterAnimations.randomCharacter();
+        characterPathList = CharacterAnimations.randomCharacter();
 
         for (String path : characterPathList.get(0)) walkingLeftTextureList.add(new Texture(path));
         for (String path : characterPathList.get(1)) askingTextureList.add(new Texture(path));
         for (String path : characterPathList.get(2)) sittingTextureList.add(new Texture(path));
         for (String path : characterPathList.get(3)) walkingRightTextureList.add(new Texture(path));
+        soundsList.addAll(CharacterAnimations.characterSoundsList.get(
+                CharacterAnimations.getIndexOfCharacter(characterPathList)));
 
         characterState = CharacterState.IS_WALKING_LEFT;
         sitPlace = SitPlace.randomPlace();
@@ -103,6 +111,7 @@ public class CharacterView extends BaseView {
                 text = new LabelView(x, y + height + 50, MyGdxGame.talkFont.bitmapFont,
                         "give me " + neededDrink.drinkName);
                 text.alignCenter(x + width / 2);
+                SoundHelper.playSound(soundsList.get(neededDrink.number));
             }
 
         }
