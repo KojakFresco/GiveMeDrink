@@ -1,9 +1,10 @@
 package com.mygdx.givemedrink.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class BaseView {
+public class BaseView extends InputAdapter {
 
     int x;
     int y;

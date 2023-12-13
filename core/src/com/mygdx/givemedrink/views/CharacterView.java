@@ -76,6 +76,7 @@ public class CharacterView extends BaseView {
             if (TimeUtils.millis() - talkStart >= 2000) {
                 text.dispose();
                 characterState = CharacterState.IS_SITTING;
+                frameCounter = 0;
             }
         }
         else if (characterState == CharacterState.IS_SITTING) {
@@ -97,6 +98,7 @@ public class CharacterView extends BaseView {
             x -= GameSettings.CHARACTER_SPEED;
             if (x <= sitPlace.placeX) {
                 characterState = CharacterState.IS_ASKING;
+                frameCounter = 0;
                 talkStart = TimeUtils.millis();
                 text = new LabelView(x, y + height + 50, MyGdxGame.talkFont.bitmapFont,
                         "give me " + neededDrink.drinkName);

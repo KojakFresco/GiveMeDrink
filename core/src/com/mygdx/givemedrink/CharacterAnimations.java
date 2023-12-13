@@ -23,7 +23,7 @@ public class CharacterAnimations {
 
         for (int i = 0; i < 2; ++i)
             character1WalkLeftList.add("tiles/characters/test" + i + ".png");
-        for (int i = 0; i < 2; ++i)
+        for (int i = 2; i > 0; --i)
             character1AskingList.add("tiles/characters/test" + i + ".png");
         for (int i = 0; i < 2; ++i)
             character1SitList.add("tiles/characters/test" + i + ".png");
