@@ -35,8 +35,10 @@ public class ButtonView extends BaseView {
         else {
             batch.draw(textureList.get((int) (frameCounter * frameMultiplexer)), x, y, width, height);
             frameCounter = frameCounter + 1;
-            if (frameCounter * frameMultiplexer >= textureList.size()) {
+            if ((int) (frameCounter * frameMultiplexer) >= textureList.size()) {
                 onClickListener.onClick();
+                isPressed = false;
+                frameCounter = 0;
             }
         }
     }

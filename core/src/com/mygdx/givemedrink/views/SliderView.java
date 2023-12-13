@@ -3,6 +3,7 @@ package com.mygdx.givemedrink.views;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.givemedrink.utils.MemoryHelper;
 
 public class SliderView extends BaseView {
 
@@ -22,7 +23,9 @@ public class SliderView extends BaseView {
 
         stickImage = new ImageView(x, y + height / 3, width, height / 3,
                 "icons/table.jpg");
-        pointerImage = new ImageView(x, y, height, height, "tiles/walter0.png");
+        pointerImage = new ImageView(
+                (int) (x + (width - height) * MemoryHelper.loadMusicVolume()), y,
+                height, height, "tiles/walter0.png");
     }
 
     public void draw(SpriteBatch batch) {
@@ -63,8 +66,6 @@ public class SliderView extends BaseView {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Vector3 vector = new Vector3(screenX, screenY, 0);
-        vector = camera.unproject(vector);
         if (this.isDragging) this.isDragging = false;
         this.onSliderNewValueListener.onNewValue(
                 (float) (this.pointerImage.x - this.x)

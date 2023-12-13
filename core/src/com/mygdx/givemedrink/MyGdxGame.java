@@ -27,6 +27,7 @@ public class MyGdxGame extends Game {
 	public GameScreen gameScreen;
 
 	public static FontHelper talkFont;
+	public static FontHelper titleFont;
 
 	@Override
 	public void create () {
@@ -39,6 +40,7 @@ public class MyGdxGame extends Game {
 		characterAnimations = new CharacterAnimations();
 
 		talkFont = new FontHelper(50, "fonts/press-start-k.ttf", Color.WHITE);
+		titleFont = new FontHelper(100, "fonts/big_8.ttf", Color.WHITE);
 
 		menuScreen = new MenuScreen(this);
 		aboutScreen = new AboutScreen(this);

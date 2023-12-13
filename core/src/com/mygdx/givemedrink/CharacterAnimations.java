@@ -8,18 +8,22 @@ public class CharacterAnimations {
 
     public static ArrayList<ArrayList<ArrayList<String>>> charactersPathsList;
 
-    public ArrayList<ArrayList<String>> character1PathsList;
-
-
     public CharacterAnimations() {
         charactersPathsList = new ArrayList<>();
 
-        character1PathsList = new ArrayList<>();
+        ArrayList<ArrayList<String>> character1PathsList = new ArrayList<>();
 
         ArrayList<String> character1WalkLeftList = new ArrayList<>();
         ArrayList<String> character1AskingList = new ArrayList<>();
         ArrayList<String> character1SitList = new ArrayList<>();
         ArrayList<String> character1WalkRightList = new ArrayList<>();
+
+        ArrayList<ArrayList<String>> bikerPathsList = new ArrayList<>();
+
+        ArrayList<String> bikerWalkLeftList = new ArrayList<>();
+        ArrayList<String> bikerAskingList = new ArrayList<>();
+        ArrayList<String> bikerSitList = new ArrayList<>();
+        ArrayList<String> bikerWalkRightList = new ArrayList<>();
 
         for (int i = 0; i < 2; ++i)
             character1WalkLeftList.add("tiles/characters/test" + i + ".png");
@@ -30,6 +34,15 @@ public class CharacterAnimations {
         for (int i = 0; i < 2; ++i)
             character1WalkRightList.add("tiles/characters/testOut" + i + ".png");
 
+        for (int i = 0; i < 2; ++i)
+            bikerWalkLeftList.add("tiles/characters/biker/biker" + i + ".png");
+        for (int i = 1; i >= 0; --i)
+            bikerAskingList.add("tiles/characters/biker/biker" + i + ".png");
+        for (int i = 0; i < 2; ++i)
+            bikerSitList.add("tiles/characters/biker/biker" + i + ".png");
+        for (int i = 0; i < 2; ++i)
+            bikerWalkRightList.add("tiles/characters/biker/bikerOut" + i + ".png");
+
 
         character1PathsList.add(character1WalkLeftList);
         character1PathsList.add(character1AskingList);
@@ -37,6 +50,13 @@ public class CharacterAnimations {
         character1PathsList.add(character1WalkRightList);
 
         charactersPathsList.add(character1PathsList);
+
+        bikerPathsList.add(bikerWalkLeftList);
+        bikerPathsList.add(bikerAskingList);
+        bikerPathsList.add(bikerSitList);
+        bikerPathsList.add(bikerWalkRightList);
+
+        charactersPathsList.add(bikerPathsList);
     }
 
     public static ArrayList<ArrayList<String>> randomCharacter() {

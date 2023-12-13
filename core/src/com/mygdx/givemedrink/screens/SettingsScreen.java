@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
+import com.mygdx.givemedrink.utils.MemoryHelper;
+import com.mygdx.givemedrink.utils.SoundHelper;
 import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.views.SliderView;
@@ -70,7 +72,8 @@ public class SettingsScreen extends ScreenAdapter {
     SliderView.OnSliderNewValueListener onSlide = new SliderView.OnSliderNewValueListener() {
         @Override
         public void onNewValue(float newValue) {
-
+            SoundHelper.setVolume(newValue);
+            MemoryHelper.saveMusicVolume(newValue);
         }
     };
 }

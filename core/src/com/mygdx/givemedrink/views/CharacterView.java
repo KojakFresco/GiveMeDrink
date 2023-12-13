@@ -130,5 +130,6 @@ public class CharacterView extends BaseView {
     public void dispose() {
         for (Texture texture : walkingLeftTextureList) texture.dispose();
         for (Texture texture : sittingTextureList) texture.dispose();
+        sitPlace.isOccupied = false;
     }
 }

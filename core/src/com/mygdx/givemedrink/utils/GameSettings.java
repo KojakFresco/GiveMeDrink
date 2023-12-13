@@ -6,9 +6,10 @@ public class GameSettings {
 
     public final static int BUTTON_FRAMES_COUNT = 2;
     public final static int BUTTON_ANIMATION_FPS = 10;
-    public final static int CHARACTER_ANIMATION_FPS = 2;
+    public final static int CHARACTER_ANIMATION_FPS = 4;
 
-    public final static long TIMER = 180000;
+    public final static long TIMER = 10000;
+
     public final static int CHARACTER_SPEED = 10;
 
     public final static int GLASS_WIDTH = 98;
