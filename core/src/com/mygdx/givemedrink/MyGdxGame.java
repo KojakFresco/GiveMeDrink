@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.givemedrink.screens.AboutScreen;
 import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.screens.MenuScreen;
+import com.mygdx.givemedrink.screens.SettingsScreen;
 import com.mygdx.givemedrink.utils.FontHelper;
 
 public class MyGdxGame extends Game {
@@ -22,6 +23,7 @@ public class MyGdxGame extends Game {
 
 	public MenuScreen menuScreen;
 	public AboutScreen aboutScreen;
+	public SettingsScreen settingsScreen;
 	public GameScreen gameScreen;
 
 	public static FontHelper talkFont;
@@ -40,6 +42,7 @@ public class MyGdxGame extends Game {
 
 		menuScreen = new MenuScreen(this);
 		aboutScreen = new AboutScreen(this);
+		settingsScreen = new SettingsScreen(this);
 		gameScreen = new GameScreen(this);
 
 		setScreen(menuScreen);

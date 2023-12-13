@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.GameSettings;
+import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.views.ButtonView;
 import com.mygdx.givemedrink.views.ImageView;
@@ -21,12 +22,20 @@ public class MenuScreen extends ScreenAdapter {
 
         viewArray = new ArrayList<>();
 
+        BackgroundView background = new BackgroundView("icons/background.png");
+
         ArrayList<String> startButtonAnimation = new ArrayList<>();
         for (int i = 0; i < GameSettings.BUTTON_FRAMES_COUNT; ++i)
             startButtonAnimation.add("tiles/buttons/start/start" + i + ".png");
+
         ArrayList<String> aboutButtonAnimation = new ArrayList<>();
         for (int i = 0; i < GameSettings.BUTTON_FRAMES_COUNT; ++i)
             aboutButtonAnimation.add("tiles/buttons/about/about" + i + ".png");
+
+        ArrayList<String> settingsButtonAnimation = new ArrayList<>();
+        for (int i = 0; i < GameSettings.BUTTON_FRAMES_COUNT; ++i)
+            settingsButtonAnimation.add("tiles/buttons/settings/settings" + i + ".png");
+
         ArrayList<String> exitButtonAnimation = new ArrayList<>();
         for (int i = 0; i < GameSettings.BUTTON_FRAMES_COUNT; ++i)
             exitButtonAnimation.add("tiles/buttons/exit/exit" + i + ".png");
@@ -34,25 +43,33 @@ public class MenuScreen extends ScreenAdapter {
 
         ImageView gameName = new ImageView(0, 650, 1000, 350,
                 "icons/table.jpg");
+
         ButtonView playButton = new ButtonView(0, 450,
                 320, 120, startButtonAnimation);
         ButtonView aboutButton = new ButtonView(0, 300,
                 320, 120, aboutButtonAnimation);
-        ButtonView exitButton = new ButtonView(0, 150,
+        ButtonView settingsButton = new ButtonView(0, 150,
+                320, 120, settingsButtonAnimation);
+        ButtonView exitButton = new ButtonView(0, 0,
                 320, 120, exitButtonAnimation);
 
         playButton.setOnClickListener(onPlayButtonClicked);
         aboutButton.setOnClickListener(onAboutButtonClicked);
+        settingsButton.setOnClickListener(onSettingsButtonClicked);
         exitButton.setOnClickListener(onExitButtonClicked);
 
         gameName.alignCenter();
+
         playButton.alignCenter();
         aboutButton.alignCenter();
+        settingsButton.alignCenter();
         exitButton.alignCenter();
 
+        viewArray.add(background);
         viewArray.add(gameName);
         viewArray.add(playButton);
         viewArray.add(aboutButton);
+        viewArray.add(settingsButton);
         viewArray.add(exitButton);
     }
     @Override
@@ -91,6 +108,13 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.aboutScreen);
+        }
+    };
+
+    BaseView.OnClickListener onSettingsButtonClicked = new BaseView.OnClickListener() {
+        @Override
+        public void onClick() {
+            myGdxGame.setScreen(myGdxGame.settingsScreen);
         }
     };
 

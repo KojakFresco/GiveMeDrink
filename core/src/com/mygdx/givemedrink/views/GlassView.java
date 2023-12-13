@@ -11,7 +11,7 @@ public class GlassView extends BaseView {
     public Drink drink;
 
     boolean isFalling;
-    boolean isStopped;
+    public boolean isStopped;
     Texture texture;
 
     double velocityX;
@@ -36,7 +36,6 @@ public class GlassView extends BaseView {
 
     public void move(double accelerometerY) {
         double alpha = accelerometerY * Math.PI / 20;
-        System.out.println(alpha);
         if (!isFalling && !isStopped) {
             if (alpha >= Math.PI / 20)
                 velocityX += 9.8 *
