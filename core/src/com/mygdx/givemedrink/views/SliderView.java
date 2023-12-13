@@ -22,7 +22,7 @@ public class SliderView extends BaseView {
         this.camera = camera;
 
         stickImage = new ImageView(x, y + height / 3, width, height / 3,
-                "icons/table.jpg");
+                "icons/stick.png");
         pointerImage = new ImageView(
                 (int) (x + (width - height) * MemoryHelper.loadMusicVolume()), y,
                 height, height, "tiles/walter0.png");
@@ -42,9 +42,13 @@ public class SliderView extends BaseView {
         Vector3 vector = new Vector3(screenX, screenY, 0);
         vector = camera.unproject(vector);
 
-        if (this.isHit((int) vector.x, (int) vector.y)) {
-            this.isDragging = true;
-            this.pointerImage.x = (int) (vector.x - this.pointerImage.width);
+        if (isHit((int) vector.x, (int) vector.y)) {
+            isDragging = true;
+            int newX = (int) (vector.x - pointerImage.width / 2);
+            newX = Math.min(x + stickImage.width
+                    - this.pointerImage.width, newX);
+            newX = Math.max(x, newX);
+            pointerImage.x = newX;
         }
         return super.touchDown(screenX, screenY, pointer, button);
     }
@@ -54,12 +58,12 @@ public class SliderView extends BaseView {
         Vector3 vector = new Vector3(screenX, screenY, 0);
         vector = camera.unproject(vector);
         if (this.isDragging) {
-            int newX = (int) (vector.x - this.pointerImage.width / 2);
-            newX = Math.min(this.x + this.stickImage.width
-                    - this.pointerImage.width, newX);
-            newX = Math.max(this.x, newX);
+            int newX = (int) (vector.x - pointerImage.width / 2);
+            newX = Math.min(x + stickImage.width
+                    - pointerImage.width, newX);
+            newX = Math.max(x, newX);
 
-            this.pointerImage.x = newX;
+            pointerImage.x = newX;
         }
         return super.touchDragged(screenX, screenY, pointer);
     }

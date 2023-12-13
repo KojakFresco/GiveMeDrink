@@ -38,8 +38,8 @@ public class CharacterView extends BaseView {
     int frameCounter;
     double frameMultiplexer;
 
-    public CharacterView(int width, int height) {
-        super(Gdx.graphics.getWidth(), GameSettings.FLOOR_HEIGHT, width, height);
+    public CharacterView() {
+        super(Gdx.graphics.getWidth(), GameSettings.FLOOR_HEIGHT, 400, 700);
 
         walkingLeftTextureList = new ArrayList<>();
         askingTextureList = new ArrayList<>();
@@ -109,7 +109,7 @@ public class CharacterView extends BaseView {
                 frameCounter = 0;
                 talkStart = TimeUtils.millis();
                 text = new LabelView(x, y + height + 50, MyGdxGame.talkFont.bitmapFont,
-                        "give me " + neededDrink.drinkName);
+                        neededDrink.drinkName);
                 text.alignCenter(x + width / 2);
                 SoundHelper.playSound(soundsList.get(neededDrink.number));
             }

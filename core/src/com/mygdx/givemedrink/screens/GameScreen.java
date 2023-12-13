@@ -113,7 +113,7 @@ public class GameScreen extends ScreenAdapter {
         gameStart = TimeUtils.millis();
         gameState = GameState.IS_PLAYING;
 
-        SoundHelper.playMusic(0);
+        SoundHelper.playMusic(1);
     }
 
     @Override
@@ -159,6 +159,7 @@ public class GameScreen extends ScreenAdapter {
 
                     System.out.println(glassGot);
                     if (!glassGot) {
+                        SoundHelper.playMistakeSound();
                         counter -= 30;
                         combo = 1;
                         playViewArray.remove(glass);
@@ -224,7 +225,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void spawnCharacter() {
         spawnTimer = TimeUtils.millis();
-        CharacterView character = new CharacterView(400, 700);
+        CharacterView character = new CharacterView();
         charactersArray.add(character);
         playViewArray.add(1, character);
     }

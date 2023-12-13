@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.GameSettings;
+import com.mygdx.givemedrink.utils.SoundHelper;
 import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.views.ButtonView;
@@ -72,6 +73,12 @@ public class MenuScreen extends ScreenAdapter {
         viewArray.add(settingsButton);
         viewArray.add(exitButton);
     }
+
+    @Override
+    public void show() {
+        SoundHelper.playMusic(0);
+    }
+
     @Override
     public void render(float delta) {
 

@@ -12,6 +12,8 @@ import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.screens.MenuScreen;
 import com.mygdx.givemedrink.screens.SettingsScreen;
 import com.mygdx.givemedrink.utils.FontHelper;
+import com.mygdx.givemedrink.utils.MemoryHelper;
+import com.mygdx.givemedrink.utils.SoundHelper;
 
 public class MyGdxGame extends Game {
 	public SpriteBatch batch;
@@ -48,6 +50,8 @@ public class MyGdxGame extends Game {
 		gameScreen = new GameScreen(this);
 
 		setScreen(menuScreen);
+
+		SoundHelper.setVolume(MemoryHelper.loadMusicVolume());
 
 	}
 

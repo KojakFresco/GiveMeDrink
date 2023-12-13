@@ -5,11 +5,14 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CharacterAnimations {
 
     public static ArrayList<ArrayList<ArrayList<String>>> charactersPathsList;
     public static ArrayList<ArrayList<Sound>>  characterSoundsList;
+
+    static Random random = new Random(System.currentTimeMillis());
 
     public CharacterAnimations() {
         charactersPathsList = new ArrayList<>();
@@ -29,6 +32,13 @@ public class CharacterAnimations {
         ArrayList<String> bikerAskingList = new ArrayList<>();
         ArrayList<String> bikerSitList = new ArrayList<>();
         ArrayList<String> bikerWalkRightList = new ArrayList<>();
+
+        ArrayList<ArrayList<String>> walterPathsList = new ArrayList<>();
+
+        ArrayList<String> walterWalkLeftList = new ArrayList<>();
+        ArrayList<String> walterAskingList = new ArrayList<>();
+        ArrayList<String> walterSitList = new ArrayList<>();
+        ArrayList<String> walterWalkRightList = new ArrayList<>();
 
         for (int i = 0; i < 2; ++i)
             character1WalkLeftList.add("tiles/characters/test" + i + ".png");
@@ -51,6 +61,15 @@ public class CharacterAnimations {
         for (int i = 0; i < 2; ++i)
             bikerWalkRightList.add("tiles/characters/biker/bikerOut" + i + ".png");
 
+        for (int i = 0; i < 2; ++i)
+            walterWalkLeftList.add("tiles/characters/walter/walter" + i + ".png");
+        for (int i = 2; i > 0; --i)
+            walterAskingList.add("tiles/characters/walter/walter" + i + ".png");
+        for (int i = 0; i < 2; ++i)
+            walterSitList.add("tiles/characters/walter/walter" + i + ".png");
+        for (int i = 0; i < 2; ++i)
+            walterWalkRightList.add("tiles/characters/walter/walterOut" + i + ".png");
+
 
         character1PathsList.add(character1WalkLeftList);
         character1PathsList.add(character1AskingList);
@@ -67,10 +86,19 @@ public class CharacterAnimations {
         characterSoundsList.add(character1SoundsList);
 
         charactersPathsList.add(bikerPathsList);
+
+        walterPathsList.add(walterWalkLeftList);
+        walterPathsList.add(walterAskingList);
+        walterPathsList.add(walterSitList);
+        walterPathsList.add(walterWalkRightList);
+        characterSoundsList.add(character1SoundsList);
+
+        charactersPathsList.add(walterPathsList);
     }
 
     public static ArrayList<ArrayList<String>> randomCharacter() {
-        return charactersPathsList.get(MathUtils.random(0, charactersPathsList.size() - 1));
+        System.out.println("random:" + random.nextInt(charactersPathsList.size()));
+        return charactersPathsList.get(random.nextInt(charactersPathsList.size()));
     }
 
     public  static int getIndexOfCharacter(ArrayList<ArrayList<String>> character) {

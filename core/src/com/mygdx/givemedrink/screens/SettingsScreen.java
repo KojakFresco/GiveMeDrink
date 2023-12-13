@@ -26,7 +26,7 @@ public class SettingsScreen extends ScreenAdapter {
 
         BackgroundView background = new BackgroundView("icons/background.png");
 
-        slider = new SliderView(200, 600, 500, 100, myGdxGame.camera);
+        slider = new SliderView(400, 600, 750, 150, myGdxGame.camera);
 
         slider.setOnSliderNewValueListener(onSlide);
 
