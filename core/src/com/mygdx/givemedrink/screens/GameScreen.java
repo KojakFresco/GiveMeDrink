@@ -11,14 +11,13 @@ import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.views.CharacterView;
-import com.mygdx.givemedrink.views.CounterView;
+import com.mygdx.givemedrink.views.NumberLabelView;
 import com.mygdx.givemedrink.views.GlassView;
 import com.mygdx.givemedrink.views.ImageView;
 
 import java.util.ArrayList;
 
 public class GameScreen extends ScreenAdapter {
-    //TODO: counter
     //TODO: timer
 
     MyGdxGame myGdxGame;
@@ -28,11 +27,15 @@ public class GameScreen extends ScreenAdapter {
 
     boolean glassGot;
 
+    public static long gameStart;
+    public static long gameTimer;
+
     public static long spawnTimer;
 
     int counter;
     double combo;
-    CounterView counterLabel;
+    NumberLabelView counterLabel;
+    NumberLabelView timerLabel;
 
     ArrayList<BaseView> viewArray;
     ArrayList<Drink> neededGlassesArray;
@@ -61,20 +64,29 @@ public class GameScreen extends ScreenAdapter {
         ImageView table = new ImageView(0, 0, (int) (888 * 2.25), (int) (168 * 2.25),
                 "icons/table.jpeg");
 
-        counterLabel = new CounterView(
-                Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() - 60,
+        counterLabel = new NumberLabelView(
+                0, Gdx.graphics.getHeight() - 60,
                 MyGdxGame.talkFont.bitmapFont, "SCORE: ");
+        timerLabel = new NumberLabelView(
+                Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() - 60,
+                MyGdxGame.talkFont.bitmapFont, "");
 
         viewArray.add(table);
         viewArray.add(counterLabel);
+        viewArray.add(timerLabel);
+
+        counterLabel.alignCenter();
 
         startAccelerometerY = Gdx.input.getAccelerometerY();
         spawnTimer = TimeUtils.millis();
+
+        gameStart = TimeUtils.millis();
     }
 
     @Override
     public void render(float delta) {
 
+        gameTimer = GameSettings.TIMER - (TimeUtils.millis() - gameStart);
         accelerometerY = Gdx.input.getAccelerometerY() - startAccelerometerY;
 
         if (glass != null) {
@@ -117,7 +129,7 @@ public class GameScreen extends ScreenAdapter {
                     glass.dispose();
                 }
 
-                counterLabel.setMessage(counter);
+                counterLabel.setCounter(counter);
 
             }
         }
@@ -143,6 +155,8 @@ public class GameScreen extends ScreenAdapter {
 
         if (charactersArray.size() < 3 && TimeUtils.millis() - spawnTimer >= 2000)
             spawnCharacter();
+
+        timerLabel.setTimer(gameTimer);
 
         ScreenUtils.clear(0.3f,0.2f,0.2f,1);
 
