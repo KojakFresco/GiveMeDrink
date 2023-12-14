@@ -51,7 +51,7 @@ public class MyGdxGame extends Game {
 
 		setScreen(menuScreen);
 
-		SoundHelper.setVolume(MemoryHelper.loadMusicVolume());
+		SoundHelper.setMusicVolume(MemoryHelper.loadMusicVolume());
 
 	}
 

@@ -6,7 +6,7 @@ public enum Drink {
     DRINK0(0, "icons/water.png", "water"),
     DRINK1(1, "icons/dobriy.png", "dobriy cola"),
     DRINK2(2, "icons/mors.png", "mors"),
-    WRONGDRINK(5, "icons/burger0.png", "wrong");
+    WRONGDRINK(5, "icons/badDrink.png", "wrong");
 
     public final int number;
     public final String texturePath;

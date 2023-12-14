@@ -12,7 +12,7 @@ public class CharacterAnimations {
     public static ArrayList<ArrayList<ArrayList<String>>> charactersPathsList;
     public static ArrayList<ArrayList<Sound>>  characterSoundsList;
 
-    static Random random = new Random(System.currentTimeMillis());
+    static Random random = new Random();
 
     public CharacterAnimations() {
         charactersPathsList = new ArrayList<>();
@@ -40,21 +40,36 @@ public class CharacterAnimations {
         ArrayList<String> walterSitList = new ArrayList<>();
         ArrayList<String> walterWalkRightList = new ArrayList<>();
 
+        ArrayList<ArrayList<String>> mudriyRusPathsList = new ArrayList<>();
+
+        ArrayList<String> mudriyRusWalkLeftList = new ArrayList<>();
+        ArrayList<String> mudriyRusAskingList = new ArrayList<>();
+        ArrayList<String> mudriyRusSitList = new ArrayList<>();
+        ArrayList<String> mudriyRusWalkRightList = new ArrayList<>();
+        ArrayList<Sound> mudriyRusSoundsList = new ArrayList<>();
+
+        ArrayList<ArrayList<String>> boyPathsList = new ArrayList<>();
+
+        ArrayList<String> boyWalkLeftList = new ArrayList<>();
+        ArrayList<String> boyAskingList = new ArrayList<>();
+        ArrayList<String> boySitList = new ArrayList<>();
+        ArrayList<String> boyWalkRightList = new ArrayList<>();
+
         for (int i = 0; i < 2; ++i)
-            character1WalkLeftList.add("tiles/characters/test" + i + ".png");
+            character1WalkLeftList.add("tiles/characters/test/test" + i + ".png");
         for (int i = 2; i > 0; --i)
-            character1AskingList.add("tiles/characters/test" + i + ".png");
+            character1AskingList.add("tiles/characters/test/test" + i + ".png");
         for (int i = 0; i < 2; ++i)
-            character1SitList.add("tiles/characters/test" + i + ".png");
+            character1SitList.add("tiles/characters/test/test" + i + ".png");
         for (int i = 0; i < 2; ++i)
-            character1WalkRightList.add("tiles/characters/testOut" + i + ".png");
+            character1WalkRightList.add("tiles/characters/test/testOut" + i + ".png");
         for (int i = 0; i < 3; ++i)
             character1SoundsList.add(Gdx.audio.newSound(
                     Gdx.files.internal("sounds/testSound" + i + ".mp3")));
 
         for (int i = 0; i < 2; ++i)
             bikerWalkLeftList.add("tiles/characters/biker/biker" + i + ".png");
-        for (int i = 1; i >= 0; --i)
+        for (int i = 2; i > 0; --i)
             bikerAskingList.add("tiles/characters/biker/biker" + i + ".png");
         for (int i = 0; i < 2; ++i)
             bikerSitList.add("tiles/characters/biker/biker" + i + ".png");
@@ -69,6 +84,26 @@ public class CharacterAnimations {
             walterSitList.add("tiles/characters/walter/walter" + i + ".png");
         for (int i = 0; i < 2; ++i)
             walterWalkRightList.add("tiles/characters/walter/walterOut" + i + ".png");
+
+        for (int i = 0; i < 2; ++i)
+            mudriyRusWalkLeftList.add("tiles/characters/mudriyRus/mudriyRus" + i + ".png");
+        for (int i = 2; i > 0; --i)
+            mudriyRusAskingList.add("tiles/characters/mudriyRus/mudriyRus" + i + ".png");
+        for (int i = 0; i < 2; ++i)
+            mudriyRusSitList.add("tiles/characters/mudriyRus/mudriyRus" + i + ".png");
+        for (int i = 0; i < 2; ++i)
+            mudriyRusWalkRightList.add("tiles/characters/mudriyRus/mudriyRusOut" + i + ".png");
+        for (int i = 0; i < 3; ++i)
+            mudriyRusSoundsList.add(Gdx.audio.newSound(
+                    Gdx.files.internal("sounds/mudriyRusSound" + i + ".mp3")));
+
+        for (int i = 0; i < 2; ++i)
+            boyWalkLeftList.add("tiles/characters/boy/boy" + i + ".png");
+        for (int i = 2; i > 0; --i)
+            boyAskingList.add("tiles/characters/boy/boy" + i + ".png");
+        boySitList.add("tiles/characters/boy/boy2.png");
+        for (int i = 0; i < 2; ++i)
+            boyWalkRightList.add("tiles/characters/boy/boyOut" + i + ".png");
 
 
         character1PathsList.add(character1WalkLeftList);
@@ -94,6 +129,22 @@ public class CharacterAnimations {
         characterSoundsList.add(character1SoundsList);
 
         charactersPathsList.add(walterPathsList);
+
+        mudriyRusPathsList.add(mudriyRusWalkLeftList);
+        mudriyRusPathsList.add(mudriyRusAskingList);
+        mudriyRusPathsList.add(mudriyRusSitList);
+        mudriyRusPathsList.add(mudriyRusWalkRightList);
+        characterSoundsList.add(mudriyRusSoundsList);
+
+        charactersPathsList.add(mudriyRusPathsList);
+
+        boyPathsList.add(boyWalkLeftList);
+        boyPathsList.add(boyAskingList);
+        boyPathsList.add(boySitList);
+        boyPathsList.add(boyWalkRightList);
+        characterSoundsList.add(character1SoundsList);
+
+        charactersPathsList.add(boyPathsList);
     }
 
     public static ArrayList<ArrayList<String>> randomCharacter() {

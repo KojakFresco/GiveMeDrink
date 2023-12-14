@@ -2,13 +2,11 @@ package com.mygdx.givemedrink.utils;
 
 public class GameSettings {
 
-    public static double FRICTION_FACTOR = 0.02;
-
     public final static int BUTTON_FRAMES_COUNT = 2;
     public final static int BUTTON_ANIMATION_FPS = 10;
     public final static int CHARACTER_ANIMATION_FPS = 3;
 
-    public final static long TIMER = 60000;
+    public final static long TIMER = 100000;
 
     public final static int CHARACTER_SPEED = 10;
 

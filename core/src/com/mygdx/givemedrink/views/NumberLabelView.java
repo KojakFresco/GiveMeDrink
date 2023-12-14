@@ -18,6 +18,6 @@ public class NumberLabelView extends LabelView {
         timer = timer / 1000;
         int timerSecs = (int) timer % 60;
         int timerMins = (int) timer / 60;
-        super.setMessage(message + timerMins + ":" + timerSecs);
+        super.setMessage(message + timerMins + ":" + (timerSecs < 10 ? "0" : "") + timerSecs);
     }
 }

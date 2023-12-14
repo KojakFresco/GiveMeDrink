@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.givemedrink.utils.GameSettings;
+import com.mygdx.givemedrink.utils.SoundHelper;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,7 @@ public class ButtonView extends BaseView {
             frameCounter = frameCounter + 1;
             if ((int) (frameCounter * frameMultiplexer) >= textureList.size()) {
                 onClickListener.onClick();
+                SoundHelper.playButtonSound();
                 isPressed = false;
                 frameCounter = 0;
             }

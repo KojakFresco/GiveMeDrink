@@ -16,7 +16,7 @@ public class SliderView extends BaseView {
 
     boolean isDragging;
 
-    public SliderView(int x, int y, int width, int height,
+    public SliderView(int x, int y, int width, int height, float defaultValue,
                       OrthographicCamera camera) {
         super(x, y, width, height);
         this.camera = camera;
@@ -24,7 +24,7 @@ public class SliderView extends BaseView {
         stickImage = new ImageView(x, y + height / 3, width, height / 3,
                 "icons/stick.png");
         pointerImage = new ImageView(
-                (int) (x + (width - height) * MemoryHelper.loadMusicVolume()), y,
+                (int) (x + (width - height) * defaultValue), y,
                 height, height, "tiles/walter0.png");
     }
 

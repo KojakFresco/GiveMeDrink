@@ -42,17 +42,22 @@ public class MenuScreen extends ScreenAdapter {
             exitButtonAnimation.add("tiles/buttons/exit/exit" + i + ".png");
 
 
-        ImageView gameName = new ImageView(0, 650, 1000, 350,
-                "icons/table.jpg");
+        ImageView gameName = new ImageView(0, Gdx.graphics.getHeight() - 550,
+                1400, 350,
+                "icons/logo.png");
 
-        ButtonView playButton = new ButtonView(0, 450,
-                320, 120, startButtonAnimation);
-        ButtonView aboutButton = new ButtonView(0, 300,
-                320, 120, aboutButtonAnimation);
-        ButtonView settingsButton = new ButtonView(0, 150,
-                320, 120, settingsButtonAnimation);
-        ButtonView exitButton = new ButtonView(0, 0,
-                320, 120, exitButtonAnimation);
+        ImageView table = new ImageView(0, 0,
+                Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 400,
+                "icons/table.jpeg");
+
+        ButtonView playButton = new ButtonView(100, 250,
+                480, 180, startButtonAnimation);
+        ButtonView aboutButton = new ButtonView(580, 250,
+                480, 180, aboutButtonAnimation);
+        ButtonView settingsButton = new ButtonView(1060, 250,
+                480, 180, settingsButtonAnimation);
+        ButtonView exitButton = new ButtonView(1540, 250,
+                480, 180, exitButtonAnimation);
 
         playButton.setOnClickListener(onPlayButtonClicked);
         aboutButton.setOnClickListener(onAboutButtonClicked);
@@ -61,12 +66,8 @@ public class MenuScreen extends ScreenAdapter {
 
         gameName.alignCenter();
 
-        playButton.alignCenter();
-        aboutButton.alignCenter();
-        settingsButton.alignCenter();
-        exitButton.alignCenter();
-
         viewArray.add(background);
+        viewArray.add(table);
         viewArray.add(gameName);
         viewArray.add(playButton);
         viewArray.add(aboutButton);
@@ -77,6 +78,7 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void show() {
         SoundHelper.playMusic(0);
+        SoundHelper.stopMusic(1);
     }
 
     @Override

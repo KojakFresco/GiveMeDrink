@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.givemedrink.utils.Drink;
 import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.GameState;
@@ -20,24 +21,28 @@ import com.mygdx.givemedrink.views.NumberLabelView;
 import com.mygdx.givemedrink.views.GlassView;
 import com.mygdx.givemedrink.views.ImageView;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.TimerTask;
 
 public class GameScreen extends ScreenAdapter {
 
     MyGdxGame myGdxGame;
 
-    GameState gameState;
+    public GameState gameState;
 
     Random random;
 
     public static double startAccelerometerY;
     public static double accelerometerY;
+    public static double frictionFactor;
 
     boolean glassGot;
 
     public static long gameStart;
     public static long gameTimer;
+    public static long pauseTimer;
 
     public static long spawnTimer;
 
@@ -50,8 +55,11 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Drink> neededGlassesArray;
     ArrayList<CharacterView> charactersArray;
 
+    ArrayList<BaseView> pauseViewArray;
     ArrayList<BaseView> winViewArray;
     ArrayList<BaseView> looseViewArray;
+
+    ButtonView pauseButton;
 
     GlassView glass;
 
@@ -61,37 +69,61 @@ public class GameScreen extends ScreenAdapter {
         random = new Random();
 
         playViewArray = new ArrayList<>();
+        pauseViewArray = new ArrayList<>();
         winViewArray = new ArrayList<>();
         looseViewArray = new ArrayList<>();
 
         neededGlassesArray = new ArrayList<>();
         charactersArray = new ArrayList<>();
 
+        ArrayList<String> pauseButtonAnimation = new ArrayList<>();
+        for (int i = 0; i < GameSettings.BUTTON_FRAMES_COUNT; ++i)
+            pauseButtonAnimation.add("tiles/buttons/pauseButton/pauseButton" + i + ".png");
+
+        ArrayList<String> retryButtonAnimation = new ArrayList<>();
+        for (int i = 0; i < GameSettings.BUTTON_FRAMES_COUNT; ++i)
+            retryButtonAnimation.add("tiles/buttons/retry/retry" + i + ".png");
+
         ArrayList<String> menuButtonAnimation = new ArrayList<>();
         for (int i = 0; i < GameSettings.BUTTON_FRAMES_COUNT; ++i)
             menuButtonAnimation.add("tiles/buttons/menu/menu" + i + ".png");
 
+        pauseButton = new ButtonView(80, 900,
+                150, 150, pauseButtonAnimation);
+
         Blackout blackout = new Blackout();
         LabelView winLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
                 "You won this game, man!");
-        ButtonView menuButton = new ButtonView(0, 200,
-                320, 120, menuButtonAnimation);
 
         LabelView looseLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
                 "Sorry, but you suck!");
+        ButtonView retryButton = new ButtonView(0, 400,
+                320, 120, retryButtonAnimation);
+        ButtonView menuButton = new ButtonView(0, 200,
+                320, 120, menuButtonAnimation);
 
         winLabel.alignCenter();
         looseLabel.alignCenter();
+        retryButton.alignCenter();
         menuButton.alignCenter();
 
         menuButton.setOnClickListener(onMenuButtonClicked);
+        retryButton.setOnClickListener(onRetryButtonClicked);
+        pauseButton.setOnClickListener(onPauseButtonClicked);
+
+        pauseViewArray.add(blackout);
+        pauseViewArray.add(pauseButton);
+        pauseViewArray.add(retryButton);
+        pauseViewArray.add(menuButton);
 
         winViewArray.add(blackout);
         winViewArray.add(winLabel);
+        winViewArray.add(retryButton);
         winViewArray.add(menuButton);
 
         looseViewArray.add(blackout);
         looseViewArray.add(looseLabel);
+        looseViewArray.add(retryButton);
         looseViewArray.add(menuButton);
 
     }
@@ -100,11 +132,9 @@ public class GameScreen extends ScreenAdapter {
     public void show() {
         counter = 0;
         combo = 1;
+        frictionFactor = 0.02;
 
         BackgroundView background = new BackgroundView("icons/background.png");
-        playViewArray.add(background);
-
-        spawnCharacter();
 
         ImageView table = new ImageView(0, 0, (int) (888 * 2.25), (int) (168 * 2.25),
                 "icons/table.jpeg");
@@ -116,7 +146,9 @@ public class GameScreen extends ScreenAdapter {
                 Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() - 60,
                 MyGdxGame.talkFont.bitmapFont, "");
 
+        playViewArray.add(background);
         playViewArray.add(table);
+        playViewArray.add(pauseButton);
         playViewArray.add(counterLabel);
         playViewArray.add(timerLabel);
 
@@ -128,7 +160,10 @@ public class GameScreen extends ScreenAdapter {
         gameStart = TimeUtils.millis();
         gameState = GameState.IS_PLAYING;
 
+        SoundHelper.stopMusic(0);
         SoundHelper.playMusic(1);
+
+        spawnCharacter();
     }
 
     @Override
@@ -137,10 +172,9 @@ public class GameScreen extends ScreenAdapter {
 
             handleInput(playViewArray);
 
-            gameTimer = GameSettings.TIMER - (TimeUtils.millis() - gameStart);
+            gameTimer = GameSettings.TIMER - TimeUtils.millis() + gameStart;
             accelerometerY = Gdx.input.getAccelerometerY() - startAccelerometerY;
-            GameSettings.FRICTION_FACTOR -= 0.00002;
-            System.out.println(GameSettings.FRICTION_FACTOR);
+            frictionFactor -= 0.00002;
 
             int normalSize = charactersArray.size();
             for (int i = 0; i < charactersArray.size(); ++i) {
@@ -182,6 +216,7 @@ public class GameScreen extends ScreenAdapter {
             }
 
         }
+        else if (gameState == GameState.ON_PAUSED) handleInput(pauseViewArray);
         else if (gameState == GameState.WON) handleInput(winViewArray);
         else if (gameState == GameState.LOOSED) handleInput(looseViewArray);
 
@@ -191,7 +226,9 @@ public class GameScreen extends ScreenAdapter {
 
         for(BaseView view : playViewArray) view.draw(myGdxGame.batch);
 
-        if (gameState == GameState.WON)
+        if (gameState == GameState.ON_PAUSED)
+            for (BaseView view : pauseViewArray) view.draw(myGdxGame.batch);
+        else if (gameState == GameState.WON)
             for (BaseView view : winViewArray) view.draw(myGdxGame.batch);
         else if (gameState == GameState.LOOSED)
             for (BaseView view : looseViewArray) view.draw(myGdxGame.batch);
@@ -277,6 +314,21 @@ public class GameScreen extends ScreenAdapter {
         playViewArray.add(1, character);
     }
 
+    BaseView.OnClickListener onPauseButtonClicked = new BaseView.OnClickListener() {
+        @Override
+        public void onClick() {
+            if (gameState == GameState.IS_PLAYING) {
+                gameState = GameState.ON_PAUSED;
+                pauseTimer = TimeUtils.millis();
+            }
+            else if (gameState == GameState.ON_PAUSED) {
+                pauseTimer = TimeUtils.millis() - pauseTimer;
+                spawnTimer += pauseTimer;
+                gameStart += pauseTimer;
+                gameState = GameState.IS_PLAYING;
+            }
+        }
+    };
     BaseView.OnClickListener onMenuButtonClicked = new BaseView.OnClickListener() {
         @Override
         public void onClick() {
@@ -285,6 +337,18 @@ public class GameScreen extends ScreenAdapter {
             playViewArray.clear();
             neededGlassesArray.clear();
             charactersArray.clear();
+        }
+    };
+
+    BaseView.OnClickListener onRetryButtonClicked = new BaseView.OnClickListener() {
+        @Override
+        public void onClick() {
+            for (BaseView view : playViewArray) view.dispose();
+            playViewArray.clear();
+            neededGlassesArray.clear();
+            charactersArray.clear();
+            SoundHelper.stopMusic(1);
+            show();
         }
     };
 }
