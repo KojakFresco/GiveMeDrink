@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.MathUtils;
 public enum Drink {
     DRINK0(0, "icons/water.png", "water"),
     DRINK1(1, "icons/dobriy.png", "dobriy cola"),
-    DRINK2(2, "icons/mors.png", "mors");
+    DRINK2(2, "icons/mors.png", "mors"),
+    WRONGDRINK(5, "icons/burger0.png", "wrong");
 
     public final int number;
     public final String texturePath;
@@ -18,7 +19,6 @@ public enum Drink {
 
     public static Drink randomDrink() {
         Drink[] drinks = Drink.values();
-        return drinks[MathUtils.random(0, drinks.length - 1)];
+        return drinks[MathUtils.random(0, drinks.length - 2)];
     }
-    //TODO: wrong bad drinks mechanic
 }

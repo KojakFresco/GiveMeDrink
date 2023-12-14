@@ -21,12 +21,15 @@ import com.mygdx.givemedrink.views.GlassView;
 import com.mygdx.givemedrink.views.ImageView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameScreen extends ScreenAdapter {
 
     MyGdxGame myGdxGame;
 
     GameState gameState;
+
+    Random random;
 
     public static double startAccelerometerY;
     public static double accelerometerY;
@@ -48,14 +51,18 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<CharacterView> charactersArray;
 
     ArrayList<BaseView> winViewArray;
+    ArrayList<BaseView> looseViewArray;
 
     GlassView glass;
 
     public GameScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
+        random = new Random();
+
         playViewArray = new ArrayList<>();
         winViewArray = new ArrayList<>();
+        looseViewArray = new ArrayList<>();
 
         neededGlassesArray = new ArrayList<>();
         charactersArray = new ArrayList<>();
@@ -70,7 +77,11 @@ public class GameScreen extends ScreenAdapter {
         ButtonView menuButton = new ButtonView(0, 200,
                 320, 120, menuButtonAnimation);
 
+        LabelView looseLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
+                "Sorry, but you suck!");
+
         winLabel.alignCenter();
+        looseLabel.alignCenter();
         menuButton.alignCenter();
 
         menuButton.setOnClickListener(onMenuButtonClicked);
@@ -78,6 +89,10 @@ public class GameScreen extends ScreenAdapter {
         winViewArray.add(blackout);
         winViewArray.add(winLabel);
         winViewArray.add(menuButton);
+
+        looseViewArray.add(blackout);
+        looseViewArray.add(looseLabel);
+        looseViewArray.add(menuButton);
 
     }
 
@@ -124,64 +139,27 @@ public class GameScreen extends ScreenAdapter {
 
             gameTimer = GameSettings.TIMER - (TimeUtils.millis() - gameStart);
             accelerometerY = Gdx.input.getAccelerometerY() - startAccelerometerY;
+            GameSettings.FRICTION_FACTOR -= 0.00002;
+            System.out.println(GameSettings.FRICTION_FACTOR);
 
-            if (glass != null) {
+            int normalSize = charactersArray.size();
+            for (int i = 0; i < charactersArray.size(); ++i) {
+                CharacterView character = charactersArray.get(i);
 
-                int normalSize = charactersArray.size();
-                for (int i = 0; i < charactersArray.size(); ++i) {
-                    CharacterView character = charactersArray.get(i);
-
-                    if (character.isOut) {
-                        playViewArray.remove(character);
-                        charactersArray.remove(character);
-                        character.dispose();
-                    }
-
-                    if (normalSize != charactersArray.size()) {
-                        --i;
-                        normalSize = charactersArray.size();
-                    }
+                if (character.isOut) {
+                    playViewArray.remove(character);
+                    charactersArray.remove(character);
+                    character.dispose();
                 }
 
-                if (glass.isStopped) {
-                    for (CharacterView character : charactersArray) {
-                        if (character.getGlass(glass)) {
-                            counter += 10 * combo;
-                            combo += 0.5;
-                            neededGlassesArray.remove(glass.drink);
-                            playViewArray.remove(glass);
-                            glass.dispose();
-                            character.sitPlace.isOccupied = false;
-                            glassGot = true;
-                            break;
-                        }
-                    }
-
-                    System.out.println(glassGot);
-                    if (!glassGot) {
-                        SoundHelper.playMistakeSound();
-                        counter -= 30;
-                        combo = 1;
-                        playViewArray.remove(glass);
-                        glass.dispose();
-                    }
-
-                    counterLabel.setCounter(counter);
-
+                if (normalSize != charactersArray.size()) {
+                    --i;
+                    normalSize = charactersArray.size();
                 }
             }
 
+            glassLogic();
 
-            if (playViewArray.contains(glass) && glass != null) glass.move(accelerometerY);
-            else if (neededGlassesArray.size() != 0) {
-                glass = new GlassView(
-                        0, GameSettings.TABLE_HEIGHT,
-                        GameSettings.GLASS_WIDTH, GameSettings.GLASS_HEIGHT,
-                        neededGlassesArray.get(MathUtils.random(0, neededGlassesArray.size() - 1))
-                );
-                glassGot = false;
-                playViewArray.add(glass);
-            }
             for (CharacterView character : charactersArray) {
                 character.move();
                 if (!character.orderAccepted && character.isSitting()) {
@@ -195,10 +173,17 @@ public class GameScreen extends ScreenAdapter {
 
             timerLabel.setTimer(gameTimer);
 
-            if (gameTimer <= 0) gameState = GameState.WON;
+            if (gameTimer <= 0) {
+                if (counter >= 300) {
+                    gameState = GameState.WON;
+                    System.out.println("won");
+                }
+                else gameState = GameState.LOOSED;
+            }
 
         }
         else if (gameState == GameState.WON) handleInput(winViewArray);
+        else if (gameState == GameState.LOOSED) handleInput(looseViewArray);
 
         ScreenUtils.clear(0.3f,0.2f,0.2f,1);
 
@@ -208,6 +193,8 @@ public class GameScreen extends ScreenAdapter {
 
         if (gameState == GameState.WON)
             for (BaseView view : winViewArray) view.draw(myGdxGame.batch);
+        else if (gameState == GameState.LOOSED)
+            for (BaseView view : looseViewArray) view.draw(myGdxGame.batch);
 
         myGdxGame.batch.end();
     }
@@ -220,6 +207,66 @@ public class GameScreen extends ScreenAdapter {
             System.out.println(myGdxGame.touch.x);
             for (BaseView view : viewArray)
                 view.isHit((int) myGdxGame.touch.x, (int) myGdxGame.touch.y);
+        }
+    }
+
+    public void glassLogic() {
+        if (glass != null) {
+
+            if (glass.isStopped) {
+                for (CharacterView character : charactersArray) {
+                    if (character.getGlass(glass)) {
+                        counter += 10 * combo;
+                        combo += 0.5;
+                        neededGlassesArray.remove(glass.drink);
+                        playViewArray.remove(glass);
+                        glass.dispose();
+                        character.sitPlace.isOccupied = false;
+                        glassGot = true;
+                        break;
+                    }
+                }
+
+                if (!glassGot) {
+                    SoundHelper.playMistakeSound();
+                    counter -= 30;
+                    combo = 1;
+                    playViewArray.remove(glass);
+                    glass.dispose();
+                }
+
+            }
+            else if (glass.isOut()) {
+                if (glass.drink != Drink.WRONGDRINK) {
+                    SoundHelper.playMistakeSound();
+                    counter -= 30;
+                    combo = 1;
+                }
+                playViewArray.remove(glass);
+                glass.dispose();
+            }
+
+            counterLabel.setCounter(counter);
+
+        }
+
+
+        if (playViewArray.contains(glass) && glass != null) glass.move(accelerometerY);
+        else if (neededGlassesArray.size() != 0) {
+
+            int chance = random.nextInt(100);
+            Drink drink;
+
+            if (chance % 6 == 0) drink = Drink.WRONGDRINK;
+            else drink = neededGlassesArray.get(
+                    MathUtils.random(0, neededGlassesArray.size() - 1));
+
+            glass = new GlassView(
+                    0, GameSettings.TABLE_HEIGHT,
+                    GameSettings.GLASS_WIDTH, GameSettings.GLASS_HEIGHT, drink
+            );
+            glassGot = false;
+            playViewArray.add(glass);
         }
     }
 

@@ -14,6 +14,7 @@ public class GlassView extends BaseView {
     public boolean isStopped;
     Texture texture;
 
+    double alpha;
     double velocityX;
     double velocityY;
 
@@ -35,7 +36,7 @@ public class GlassView extends BaseView {
     }
 
     public void move(double accelerometerY) {
-        double alpha = accelerometerY * Math.PI / 20;
+        alpha = accelerometerY * Math.PI / 20;
         if (!isFalling && !isStopped) {
             if (alpha >= Math.PI / 20)
                 velocityX += 9.8 *
@@ -60,5 +61,9 @@ public class GlassView extends BaseView {
 
         x += velocityX;
         y += velocityY;
+    }
+
+    public boolean isOut() {
+        return x >= Gdx.graphics.getWidth();
     }
 }

@@ -97,7 +97,6 @@ public class CharacterAnimations {
     }
 
     public static ArrayList<ArrayList<String>> randomCharacter() {
-        System.out.println("random:" + random.nextInt(charactersPathsList.size()));
         return charactersPathsList.get(random.nextInt(charactersPathsList.size()));
     }
 
