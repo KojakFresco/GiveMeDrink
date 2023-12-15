@@ -229,7 +229,7 @@ public class GameScreen extends ScreenAdapter {
                 }
                 else {
                     gameState = GameState.LOST;
-                    MyGdxGame.soundHelper.playloseSound();
+                    MyGdxGame.soundHelper.playLoseSound();
                     MyGdxGame.soundHelper.stopMusic(1);
                 }
             }

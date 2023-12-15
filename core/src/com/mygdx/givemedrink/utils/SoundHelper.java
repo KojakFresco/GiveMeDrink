@@ -43,7 +43,7 @@ public class SoundHelper {
         soundList[2].play(soundVolume);
     }
 
-    public void playloseSound() {
+    public void playLoseSound() {
         soundList[3].play(soundVolume);
     }
 
