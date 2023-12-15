@@ -2,5 +2,6 @@
 <resources>
     <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar.Fullscreen">
         <item name="android:colorBackground">@color/ic_background_color</item>
+        <item name="android:icon">@drawable/app_icon</item>
     </style>
 </resources>
