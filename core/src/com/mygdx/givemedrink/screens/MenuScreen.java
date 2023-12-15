@@ -95,8 +95,8 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        SoundHelper.playMusic(0);
-        SoundHelper.stopMusic(1);
+        MyGdxGame.soundHelper.playMusic(0);
+        MyGdxGame.soundHelper.stopMusic(1);
 
         highScore.setCounter(MemoryHelper.loadHighScore());
     }
@@ -138,7 +138,7 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.gameScreen);
-            SoundHelper.playButtonSound();
+            MyGdxGame.soundHelper.playButtonSound();
         }
     };
 
@@ -146,7 +146,7 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.aboutScreen);
-            SoundHelper.playButtonSound();
+            MyGdxGame.soundHelper.playButtonSound();
         }
     };
 
@@ -154,15 +154,15 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.settingsScreen);
-            SoundHelper.playButtonSound();
+            MyGdxGame.soundHelper.playButtonSound();
         }
     };
 
     BaseView.OnClickListener onExitButtonClicked = new BaseView.OnClickListener() {
         @Override
         public void onClick() {
+            MyGdxGame.soundHelper.playButtonSound();
             Gdx.app.exit();
-            SoundHelper.playButtonSound();
         }
     };
 }

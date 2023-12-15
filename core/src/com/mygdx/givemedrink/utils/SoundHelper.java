@@ -9,44 +9,44 @@ public class SoundHelper {
 
     static float soundVolume = MemoryHelper.loadSoundsVolume();
 
-    static Music[] musicList = {
+    Music[] musicList = {
             Gdx.audio.newMusic(Gdx.files.internal("music/NewMenuMusic.mp3")),
             Gdx.audio.newMusic(Gdx.files.internal("music/gameMusic.mp3"))
     };
 
-    static Sound[] soundList = {
+    Sound[] soundList = {
             Gdx.audio.newSound(Gdx.files.internal("sounds/mistakeSound.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/buttonSound.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/glassSpawn.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/looseSound.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/pauseSound.mp3"))
     };
-    public static void playMusic(int index) {
+    public void playMusic(int index) {
         musicList[index].play();
         musicList[index].setLooping(true);
     }
 
-    public static void stopMusic(int index) {
+    public void stopMusic(int index) {
         musicList[index].stop();
     }
 
-    public static void playMistakeSound() {
+    public void playMistakeSound() {
         soundList[0].play(soundVolume);
     }
 
-    public static void playButtonSound() {
+    public void playButtonSound() {
         soundList[1].play(soundVolume * 0.5f);
     }
 
-    public static void playGlassSpawnSound() {
+    public void playGlassSpawnSound() {
         soundList[2].play(soundVolume);
     }
 
-    public static void playLooseSound() {
+    public void playLooseSound() {
         soundList[3].play(soundVolume);
     }
 
-    public static void playPauseSound() {
+    public void playPauseSound() {
         soundList[4].play(soundVolume);
         musicList[1].pause();
     }
@@ -55,7 +55,7 @@ public class SoundHelper {
         sound.play(soundVolume);
     }
 
-    public static void setMusicVolume(float vol) {
+    public void setMusicVolume(float vol) {
         for (Music music : musicList) music.setVolume(vol);
     }
 

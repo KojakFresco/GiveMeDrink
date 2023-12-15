@@ -127,14 +127,14 @@ public class SettingsScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.menuScreen);
-            SoundHelper.playButtonSound();
+            MyGdxGame.soundHelper.playButtonSound();
         }
     };
 
     SliderView.OnSliderNewValueListener onMusicSlide = new SliderView.OnSliderNewValueListener() {
         @Override
         public void onNewValue(float newValue) {
-            SoundHelper.setMusicVolume(newValue);
+            MyGdxGame.soundHelper.setMusicVolume(newValue);
             MemoryHelper.saveMusicVolume(newValue);
         }
     };
@@ -142,7 +142,7 @@ public class SettingsScreen extends ScreenAdapter {
     SliderView.OnSliderNewValueListener onSoundsSlide = new SliderView.OnSliderNewValueListener() {
         @Override
         public void onNewValue(float newValue) {
-            SoundHelper.setSoundsVolume(newValue);
+            MyGdxGame.soundHelper.setSoundsVolume(newValue);
             MemoryHelper.saveSoundsVolume(newValue);
         }
     };

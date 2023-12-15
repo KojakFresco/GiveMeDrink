@@ -2,6 +2,9 @@ package com.mygdx.givemedrink.utils;
 
 import com.badlogic.gdx.math.MathUtils;
 
+import java.util.SplittableRandom;
+import java.util.concurrent.ThreadLocalRandom;
+
 public enum Drink {
     DRINK0(0, "icons/water.png", "water"),
     DRINK1(1, "icons/dobriy.png", "dobriy cola"),

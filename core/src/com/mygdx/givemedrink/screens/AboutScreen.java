@@ -38,15 +38,14 @@ public class AboutScreen extends ScreenAdapter {
                 backButtonAnimation);
         LabelView educationTitle = new LabelView(0, GameSettings.SCREEN_HEIGHT / 2,
                 MyGdxGame.titleFont.bitmapFont,
-                "Education");
+                "Tutorial");
         LabelView aboutText = new LabelView(
-                GameSettings.SCREEN_HEIGHT * 30 / 1080, GameSettings.SCREEN_WIDTH * 50 / 2306,
+                30, 100,
                 MyGdxGame.talkFont.bitmapFont,
                 "You are a bartender.\nServe drinks that were ordered by rotating\n" +
                         "your phone to the right and stop drinks\nfrom moving by rotating" +
-                        "your phone to\nthe left. Throw bad drinks off the table,\nbut" +
-                        "don't do that with the right ones.\nYou can make 5 mistakes" +
-                        " before you lose.");
+                        "your phone to\nthe left. Throw bad drinks off the table,\nbut " +
+                        "don't do that with the right ones.");
 
         backButton.setOnClickListener(onBackButtonClicked);
 
@@ -95,7 +94,7 @@ public class AboutScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.menuScreen);
-            SoundHelper.playButtonSound();
+            MyGdxGame.soundHelper.playButtonSound();
         }
     };
 }

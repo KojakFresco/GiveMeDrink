@@ -24,6 +24,7 @@ public class MyGdxGame extends Game {
 	public Vector3 touch;
 
 	public static CharacterAnimations characterAnimations;
+	public static SoundHelper soundHelper;
 
 	public SplashScreen splashScreen;
 	public MenuScreen menuScreen;
@@ -43,6 +44,7 @@ public class MyGdxGame extends Game {
 		viewport = new FitViewport(2306, 1080, camera);
 
 		characterAnimations = new CharacterAnimations();
+		soundHelper = new SoundHelper();
 
 		talkFont = new FontHelper(50,
 				"fonts/press-start-k.ttf", Color.WHITE);
@@ -58,7 +60,7 @@ public class MyGdxGame extends Game {
 
 		setScreen(splashScreen);
 
-		SoundHelper.setMusicVolume(MemoryHelper.loadMusicVolume());
+		MyGdxGame.soundHelper.setMusicVolume(MemoryHelper.loadMusicVolume());
 
 	}
 

@@ -95,17 +95,21 @@ public class GameScreen extends ScreenAdapter {
 
         Blackout blackout = new Blackout();
         LabelView winLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
-                "You won this game, man!");
+                "You won this game!");
 
         LabelView looseLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
-                "Sorry, but you suck!");
-        ButtonView retryButton = new ButtonView(0, 400,
-                320, 120, retryButtonAnimation);
-        ButtonView menuButton = new ButtonView(0, 200,
-                320, 120, menuButtonAnimation);
+                "Sorry, but you loosed");
+
+        LabelView pauseLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
+                "PAUSED");
+        ButtonView retryButton = new ButtonView(0, 300,
+                480, 180, retryButtonAnimation);
+        ButtonView menuButton = new ButtonView(0, 100,
+                480, 180, menuButtonAnimation);
 
         winLabel.alignCenter();
         looseLabel.alignCenter();
+        pauseLabel.alignCenter();
         retryButton.alignCenter();
         menuButton.alignCenter();
 
@@ -114,6 +118,7 @@ public class GameScreen extends ScreenAdapter {
         pauseButton.setOnClickListener(onPauseButtonClicked);
 
         pauseViewArray.add(blackout);
+        pauseViewArray.add(pauseLabel);
         pauseViewArray.add(pauseButton);
         pauseViewArray.add(retryButton);
         pauseViewArray.add(menuButton);
@@ -162,8 +167,8 @@ public class GameScreen extends ScreenAdapter {
         gameStart = TimeUtils.millis();
         gameState = GameState.IS_PLAYING;
 
-        SoundHelper.stopMusic(0);
-        SoundHelper.playMusic(1);
+        MyGdxGame.soundHelper.stopMusic(0);
+        MyGdxGame.soundHelper.playMusic(1);
 
         spawnCharacter();
     }
@@ -218,8 +223,8 @@ public class GameScreen extends ScreenAdapter {
                 }
                 else {
                     gameState = GameState.LOOSED;
-                    SoundHelper.playLooseSound();
-                    SoundHelper.stopMusic(1);
+                    MyGdxGame.soundHelper.playLooseSound();
+                    MyGdxGame.soundHelper.stopMusic(1);
                 }
             }
 
@@ -281,7 +286,7 @@ public class GameScreen extends ScreenAdapter {
                 }
 
                 if (!glassGot) {
-                    SoundHelper.playMistakeSound();
+                    MyGdxGame.soundHelper.playMistakeSound();
                     counter -= 30;
                     combo = 1;
                     playViewArray.remove(glass);
@@ -291,7 +296,7 @@ public class GameScreen extends ScreenAdapter {
             }
             else if (glass.isOut()) {
                 if (glass.drink != Drink.WRONGDRINK) {
-                    SoundHelper.playMistakeSound();
+                    MyGdxGame.soundHelper.playMistakeSound();
                     counter -= 30;
                     combo = 1;
                 }
@@ -320,7 +325,7 @@ public class GameScreen extends ScreenAdapter {
             );
             glassGot = false;
             playViewArray.add(glass);
-            SoundHelper.playGlassSpawnSound();
+            MyGdxGame.soundHelper.playGlassSpawnSound();
         }
     }
 
@@ -337,14 +342,14 @@ public class GameScreen extends ScreenAdapter {
             if (gameState == GameState.IS_PLAYING) {
                 gameState = GameState.ON_PAUSED;
                 pauseTimer = TimeUtils.millis();
-                SoundHelper.playPauseSound();
+                MyGdxGame.soundHelper.playPauseSound();
             }
             else if (gameState == GameState.ON_PAUSED) {
                 pauseTimer = TimeUtils.millis() - pauseTimer;
                 spawnTimer += pauseTimer;
                 gameStart += pauseTimer;
                 gameState = GameState.IS_PLAYING;
-                SoundHelper.playMusic(1);
+                MyGdxGame.soundHelper.playMusic(1);
             }
         }
     };
@@ -356,7 +361,7 @@ public class GameScreen extends ScreenAdapter {
             playViewArray.clear();
             neededGlassesArray.clear();
             charactersArray.clear();
-            SoundHelper.playButtonSound();
+            MyGdxGame.soundHelper.playButtonSound();
         }
     };
 
@@ -367,8 +372,8 @@ public class GameScreen extends ScreenAdapter {
             playViewArray.clear();
             neededGlassesArray.clear();
             charactersArray.clear();
-            SoundHelper.stopMusic(1);
-            SoundHelper.playButtonSound();
+            MyGdxGame.soundHelper.stopMusic(1);
+            MyGdxGame.soundHelper.playButtonSound();
             show();
         }
     };
