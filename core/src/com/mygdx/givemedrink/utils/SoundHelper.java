@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 public class SoundHelper {
-    //TODO: add good sound
+    //TODO: (optionally) add good sound
 
     static float soundVolume = MemoryHelper.loadSoundsVolume();
 
@@ -18,7 +18,8 @@ public class SoundHelper {
             Gdx.audio.newSound(Gdx.files.internal("sounds/mistakeSound.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/buttonSound.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/glassSpawn.mp3")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/looseSound.mp3")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/loseSound.mp3")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/winSound.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/pauseSound.mp3"))
     };
     public void playMusic(int index) {
@@ -42,12 +43,16 @@ public class SoundHelper {
         soundList[2].play(soundVolume);
     }
 
-    public void playLooseSound() {
+    public void playloseSound() {
         soundList[3].play(soundVolume);
     }
 
-    public void playPauseSound() {
+    public void playWinSound() {
         soundList[4].play(soundVolume);
+    }
+
+    public void playPauseSound() {
+        soundList[5].play(soundVolume);
         musicList[1].pause();
     }
 

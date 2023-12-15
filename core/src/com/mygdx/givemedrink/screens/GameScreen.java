@@ -1,18 +1,14 @@
 package com.mygdx.givemedrink.screens;
 
-import static java.lang.Thread.sleep;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
 import com.mygdx.givemedrink.utils.Drink;
 import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.GameState;
 import com.mygdx.givemedrink.utils.MemoryHelper;
-import com.mygdx.givemedrink.utils.SoundHelper;
 import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.MyGdxGame;
@@ -24,10 +20,8 @@ import com.mygdx.givemedrink.views.NumberLabelView;
 import com.mygdx.givemedrink.views.GlassView;
 import com.mygdx.givemedrink.views.ImageView;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.TimerTask;
 
 public class GameScreen extends ScreenAdapter {
     MyGdxGame myGdxGame;
@@ -59,9 +53,10 @@ public class GameScreen extends ScreenAdapter {
 
     ArrayList<BaseView> pauseViewArray;
     ArrayList<BaseView> winViewArray;
-    ArrayList<BaseView> looseViewArray;
+    ArrayList<BaseView> loseViewArray;
 
     ButtonView pauseButton;
+    NumberLabelView highScore;
 
     GlassView glass;
 
@@ -73,7 +68,7 @@ public class GameScreen extends ScreenAdapter {
         playViewArray = new ArrayList<>();
         pauseViewArray = new ArrayList<>();
         winViewArray = new ArrayList<>();
-        looseViewArray = new ArrayList<>();
+        loseViewArray = new ArrayList<>();
 
         neededGlassesArray = new ArrayList<>();
         charactersArray = new ArrayList<>();
@@ -97,18 +92,23 @@ public class GameScreen extends ScreenAdapter {
         LabelView winLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
                 "You won this game!");
 
-        LabelView looseLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
-                "Sorry, but you loosed");
+        LabelView loseLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
+                "Sorry, but you lost");
 
         LabelView pauseLabel = new LabelView(0, 900, MyGdxGame.titleFont.bitmapFont,
                 "PAUSED");
+
+        highScore = new NumberLabelView(800, 650,
+                MyGdxGame.talkFont.bitmapFont,
+                "HIGH SCORE: ");
+
         ButtonView retryButton = new ButtonView(0, 300,
                 480, 180, retryButtonAnimation);
         ButtonView menuButton = new ButtonView(0, 100,
                 480, 180, menuButtonAnimation);
 
         winLabel.alignCenter();
-        looseLabel.alignCenter();
+        loseLabel.alignCenter();
         pauseLabel.alignCenter();
         retryButton.alignCenter();
         menuButton.alignCenter();
@@ -125,13 +125,15 @@ public class GameScreen extends ScreenAdapter {
 
         winViewArray.add(blackout);
         winViewArray.add(winLabel);
+        winViewArray.add(highScore);
         winViewArray.add(retryButton);
         winViewArray.add(menuButton);
 
-        looseViewArray.add(blackout);
-        looseViewArray.add(looseLabel);
-        looseViewArray.add(retryButton);
-        looseViewArray.add(menuButton);
+        loseViewArray.add(blackout);
+        loseViewArray.add(loseLabel);
+        loseViewArray.add(highScore);
+        loseViewArray.add(retryButton);
+        loseViewArray.add(menuButton);
 
     }
 
@@ -139,7 +141,7 @@ public class GameScreen extends ScreenAdapter {
     public void show() {
         counter = 0;
         combo = 1;
-        frictionFactor = 0.02;
+        frictionFactor = 0.05;
 
         BackgroundView background = new BackgroundView("icons/background.png");
 
@@ -217,13 +219,17 @@ public class GameScreen extends ScreenAdapter {
 
             if (gameTimer <= 0) {
                 if (counter > MemoryHelper.loadHighScore()) MemoryHelper.saveHighScore(counter);
-                if (counter >= 300) {
+                highScore.setCounter(MemoryHelper.loadHighScore());
+
+                if (counter >= GameSettings.WIN_SCORE) {
                     gameState = GameState.WON;
-                    System.out.println("won");
+                    highScore.setCounter(MemoryHelper.loadHighScore());
+                    MyGdxGame.soundHelper.playWinSound();
+                    MyGdxGame.soundHelper.stopMusic(1);
                 }
                 else {
-                    gameState = GameState.LOOSED;
-                    MyGdxGame.soundHelper.playLooseSound();
+                    gameState = GameState.LOST;
+                    MyGdxGame.soundHelper.playloseSound();
                     MyGdxGame.soundHelper.stopMusic(1);
                 }
             }
@@ -231,7 +237,7 @@ public class GameScreen extends ScreenAdapter {
         }
         else if (gameState == GameState.ON_PAUSED) handleInput(pauseViewArray);
         else if (gameState == GameState.WON) handleInput(winViewArray);
-        else if (gameState == GameState.LOOSED) handleInput(looseViewArray);
+        else if (gameState == GameState.LOST) handleInput(loseViewArray);
 
         myGdxGame.camera.update();
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
@@ -246,8 +252,8 @@ public class GameScreen extends ScreenAdapter {
             for (BaseView view : pauseViewArray) view.draw(myGdxGame.batch);
         else if (gameState == GameState.WON)
             for (BaseView view : winViewArray) view.draw(myGdxGame.batch);
-        else if (gameState == GameState.LOOSED)
-            for (BaseView view : looseViewArray) view.draw(myGdxGame.batch);
+        else if (gameState == GameState.LOST)
+            for (BaseView view : loseViewArray) view.draw(myGdxGame.batch);
 
         myGdxGame.batch.end();
     }
@@ -315,7 +321,7 @@ public class GameScreen extends ScreenAdapter {
             int chance = random.nextInt(100);
             Drink drink;
 
-            if (chance % 6 == 0) drink = Drink.WRONGDRINK;
+            if (chance % 7 == 0) drink = Drink.WRONGDRINK;
             else drink = neededGlassesArray.get(
                     MathUtils.random(0, neededGlassesArray.size() - 1));
 

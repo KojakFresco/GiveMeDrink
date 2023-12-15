@@ -1,4 +1,4 @@
-package com.mygdx.givemedrink;
+package com.mygdx.givemedrink.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;

@@ -1,7 +1,6 @@
 package com.mygdx.givemedrink;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,8 +11,8 @@ import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.screens.MenuScreen;
 import com.mygdx.givemedrink.screens.SettingsScreen;
 import com.mygdx.givemedrink.screens.SplashScreen;
+import com.mygdx.givemedrink.utils.CharacterAnimations;
 import com.mygdx.givemedrink.utils.FontHelper;
-import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.MemoryHelper;
 import com.mygdx.givemedrink.utils.SoundHelper;
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.mygdx.givemedrink.CharacterAnimations;
+import com.mygdx.givemedrink.utils.CharacterAnimations;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.CharacterState;
 import com.mygdx.givemedrink.utils.GameSettings;

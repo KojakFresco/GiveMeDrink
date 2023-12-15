@@ -10,6 +10,7 @@ public class GameSettings {
     public final static int CHARACTER_ANIMATION_FPS = 3;
 
     public final static long TIMER = 180000;
+    public final static int WIN_SCORE = 500;
 
     public final static int CHARACTER_SPEED = 10;
 

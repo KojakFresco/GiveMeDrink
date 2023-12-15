@@ -1,6 +1,7 @@
 package com.mygdx.givemedrink.views;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public class NumberLabelView extends LabelView {
 

@@ -4,5 +4,5 @@ public enum GameState {
     IS_PLAYING,
     ON_PAUSED,
     WON,
-    LOOSED
+    LOST
 }
