@@ -16,6 +16,10 @@ public class GlassView extends BaseView {
     Texture texture;
 
     double alpha;
+    double aX;
+    double aY;
+    double previousVelocityX;
+    double previousVelocityY;
     double velocityX;
     double velocityY;
 
@@ -37,31 +41,36 @@ public class GlassView extends BaseView {
     }
 
     public void move(double accelerometerY, float delta) {
+        delta *= 8;
+        previousVelocityX = velocityX;
+        previousVelocityY = velocityY;
         alpha = accelerometerY * Math.PI / 20;
         if (!isFalling && !isStopped) {
-            if (alpha >= Math.PI / 20)
-                velocityX += 9.8 *
-                        (Math.sin(alpha)
-                                - GameScreen.frictionFactor * Math.cos(alpha)) / 60 * delta / 0.016;
-            else if (alpha < 0 && velocityX > 0)
-                velocityX += 9.8 *
-                        (Math.sin(alpha)
-                                + GameScreen.frictionFactor * Math.cos(alpha)) / 50 * delta / 0.016;
+            if (alpha >= Math.PI / 20) {
+                aX = 9.8 * (Math.sin(alpha) - GameScreen.frictionFactor * Math.cos(alpha));
+                velocityX = previousVelocityX + aX * delta;
+            }
+            else if (alpha < 0 && velocityX > 0) {
+                aX = 9.8 * (Math.sin(alpha) + GameScreen.frictionFactor * Math.cos(alpha));
+                velocityX = previousVelocityX + aX * delta;
+            }
             else if (velocityX < 0) {
                 velocityX = 0;
                 isStopped = true;
             }
         }
         if (((x >= GameSettings.SCREEN_WIDTH - 270) || isFalling) && y >= 0) {
-            velocityY -= 5;
+            aY = 120;
+            velocityY = previousVelocityY - aY * delta;
             isFalling = true;
         } else {
+            aY = 0;
             velocityY = 0;
             isFalling = false;
         }
 
-        x += velocityX;
-        y += velocityY;
+        x += previousVelocityX * delta + aX * Math.pow(delta, 2) / 2;
+        y += previousVelocityY * delta + aY * Math.pow(delta, 2) / 2;
     }
 
     public boolean isOut() {

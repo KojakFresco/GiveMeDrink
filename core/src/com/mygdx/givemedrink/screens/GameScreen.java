@@ -142,7 +142,7 @@ public class GameScreen extends ScreenAdapter {
                 "icons/table.jpeg");
 
         counterLabel = new NumberLabelView(
-                0, 1000,
+                0, 1020,
                 MyGdxGame.talkFont.bitmapFont, "SCORE: ");
         timerLabel = new NumberLabelView(
                 GameSettings.SCREEN_WIDTH - 500, GameSettings.SCREEN_HEIGHT - 60,
