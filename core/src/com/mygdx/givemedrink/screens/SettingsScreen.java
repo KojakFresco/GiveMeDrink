@@ -54,7 +54,7 @@ public class SettingsScreen extends ScreenAdapter {
                 "Music");
         musicSlider = new SliderView(
                 GameSettings.SCREEN_WIDTH * 2 / 5, GameSettings.SCREEN_HEIGHT * 23 / 98,
-                GameSettings.SCREEN_WIDTH / 3, GameSettings.SCREEN_HEIGHT / 7,
+                GameSettings.SCREEN_WIDTH / 3, 150,
                 MemoryHelper.loadMusicVolume(), myGdxGame.camera);
 
         LabelView soundsText = new LabelView(
@@ -63,7 +63,7 @@ public class SettingsScreen extends ScreenAdapter {
                 "Sounds");
         soundsSlider = new SliderView(
                 GameSettings.SCREEN_WIDTH * 2 / 5, GameSettings.SCREEN_HEIGHT * 5 / 98,
-                GameSettings.SCREEN_WIDTH / 3, GameSettings.SCREEN_HEIGHT / 7,
+                GameSettings.SCREEN_WIDTH / 3, 150,
                 MemoryHelper.loadSoundsVolume(), myGdxGame.camera);
 
         backButton.setOnClickListener(onBackButtonClicked);

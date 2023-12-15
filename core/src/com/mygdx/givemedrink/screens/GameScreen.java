@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.mygdx.givemedrink.utils.Drink;
 import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.GameState;
+import com.mygdx.givemedrink.utils.MemoryHelper;
 import com.mygdx.givemedrink.utils.SoundHelper;
 import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
@@ -29,7 +30,6 @@ import java.util.Random;
 import java.util.TimerTask;
 
 public class GameScreen extends ScreenAdapter {
-    //TODO: add high score
     MyGdxGame myGdxGame;
 
     public GameState gameState;
@@ -176,7 +176,7 @@ public class GameScreen extends ScreenAdapter {
 
             gameTimer = GameSettings.TIMER - TimeUtils.millis() + gameStart;
             accelerometerY = Gdx.input.getAccelerometerY() - startAccelerometerY;
-            frictionFactor -= 0.00002;
+            frictionFactor -= 0.00004;
 
             int normalSize = charactersArray.size();
             for (int i = 0; i < charactersArray.size(); ++i) {
@@ -211,6 +211,7 @@ public class GameScreen extends ScreenAdapter {
             timerLabel.setTimer(gameTimer);
 
             if (gameTimer <= 0) {
+                if (counter > MemoryHelper.loadHighScore()) MemoryHelper.saveHighScore(counter);
                 if (counter >= 300) {
                     gameState = GameState.WON;
                     System.out.println("won");

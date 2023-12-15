@@ -5,11 +5,14 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.GameSettings;
+import com.mygdx.givemedrink.utils.MemoryHelper;
 import com.mygdx.givemedrink.utils.SoundHelper;
 import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.views.ButtonView;
 import com.mygdx.givemedrink.views.ImageView;
+import com.mygdx.givemedrink.views.LabelView;
+import com.mygdx.givemedrink.views.NumberLabelView;
 
 import java.util.ArrayList;
 
@@ -18,6 +21,8 @@ public class MenuScreen extends ScreenAdapter {
     MyGdxGame myGdxGame;
 
     ArrayList<BaseView> viewArray;
+
+    NumberLabelView highScore;
     public MenuScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
@@ -67,6 +72,10 @@ public class MenuScreen extends ScreenAdapter {
                 GameSettings.SCREEN_WIDTH / 5, GameSettings.SCREEN_HEIGHT / 6,
                 exitButtonAnimation);
 
+        highScore = new NumberLabelView(130, 130, MyGdxGame.talkFont.bitmapFont,
+                "HIGH SCORE: ");
+
+
         playButton.setOnClickListener(onPlayButtonClicked);
         aboutButton.setOnClickListener(onAboutButtonClicked);
         settingsButton.setOnClickListener(onSettingsButtonClicked);
@@ -81,12 +90,15 @@ public class MenuScreen extends ScreenAdapter {
         viewArray.add(aboutButton);
         viewArray.add(settingsButton);
         viewArray.add(exitButton);
+        viewArray.add(highScore);
     }
 
     @Override
     public void show() {
         SoundHelper.playMusic(0);
         SoundHelper.stopMusic(1);
+
+        highScore.setCounter(MemoryHelper.loadHighScore());
     }
 
     @Override

@@ -25,7 +25,7 @@ public class SliderView extends BaseView {
                 "icons/stick.png");
         pointerImage = new ImageView(
                 (int) (x + (width - height) * defaultValue), y,
-                height, height, "tiles/walter0.png");
+                height, height, "icons/walter0.png");
     }
 
     public void draw(SpriteBatch batch) {

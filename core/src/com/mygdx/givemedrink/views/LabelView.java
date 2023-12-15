@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LabelView extends BaseView {
-    //TODO: make text fade-in
+    //TODO: (optionally) make text fade-in
     BitmapFont font;
     String message;
 

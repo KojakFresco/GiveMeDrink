@@ -8,6 +8,18 @@ public class MemoryHelper {
 
     private final static Preferences prefs = Gdx.app.getPreferences("User saves");
 
+    public static void saveHighScore(int highScore) {
+        prefs.putInteger("HighScore", highScore).flush();
+    }
+
+    public static int loadHighScore() {
+        if (prefs.contains("HighScore")) {
+            return prefs.getInteger("HighScore");
+        }
+        saveMusicVolume(0);
+        return 0;
+    }
+
     public static void saveMusicVolume(float volume) {
         prefs.putFloat("MusicVolume", volume).flush();
     }

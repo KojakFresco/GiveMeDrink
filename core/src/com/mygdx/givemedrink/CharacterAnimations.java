@@ -32,6 +32,7 @@ public class CharacterAnimations {
         ArrayList<String> bikerAskingList = new ArrayList<>();
         ArrayList<String> bikerSitList = new ArrayList<>();
         ArrayList<String> bikerWalkRightList = new ArrayList<>();
+        ArrayList<Sound> bikerSoundsList = new ArrayList<>();
 
         ArrayList<ArrayList<String>> walterPathsList = new ArrayList<>();
 
@@ -77,6 +78,9 @@ public class CharacterAnimations {
             bikerSitList.add("tiles/characters/biker/biker" + i + ".png");
         for (int i = 0; i < 2; ++i)
             bikerWalkRightList.add("tiles/characters/biker/bikerOut" + i + ".png");
+        for (int i = 0; i < 3; ++i)
+            bikerSoundsList.add(Gdx.audio.newSound(
+                    Gdx.files.internal("sounds/bikerSound" + i + ".mp3")));
 
         for (int i = 0; i < 2; ++i)
             walterWalkLeftList.add("tiles/characters/walter/walter" + i + ".png");
@@ -127,7 +131,7 @@ public class CharacterAnimations {
         bikerPathsList.add(bikerAskingList);
         bikerPathsList.add(bikerSitList);
         bikerPathsList.add(bikerWalkRightList);
-        characterSoundsList.add(character1SoundsList);
+        characterSoundsList.add(bikerSoundsList);
 
         charactersPathsList.add(bikerPathsList);
 

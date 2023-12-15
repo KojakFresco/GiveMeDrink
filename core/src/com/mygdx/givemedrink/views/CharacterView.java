@@ -16,7 +16,7 @@ import com.mygdx.givemedrink.utils.SoundHelper;
 import java.util.ArrayList;
 
 public class CharacterView extends BaseView {
-    //TODO: the-same mechanics
+    //TODO: (optionally) the-same mechanics
     CharacterState characterState;
     public SitPlace sitPlace;
     public Drink neededDrink;
@@ -69,17 +69,17 @@ public class CharacterView extends BaseView {
     @Override
     public void draw(SpriteBatch batch) {
         if (characterState == CharacterState.IS_WALKING_LEFT) {
-            batch.draw(walkingLeftTextureList.get((int) (frameCounter * frameMultiplexer)),
-                    x, y, width, height);
             frameCounter = (int) ((frameCounter + 1) %
                     (walkingLeftTextureList.size() / frameMultiplexer));
+            batch.draw(walkingLeftTextureList.get((int) (frameCounter * frameMultiplexer)),
+                    x, y, width, height);
         }
         else if (characterState == CharacterState.IS_ASKING) {
             text.draw(batch);
-            batch.draw(askingTextureList.get((int) (frameCounter * frameMultiplexer)),
-                    x, y, width, height);
             frameCounter = (int) ((frameCounter + 1) %
                     (askingTextureList.size() / frameMultiplexer));
+            batch.draw(askingTextureList.get((int) (frameCounter * frameMultiplexer)),
+                    x, y, width, height);
             if (TimeUtils.millis() - talkStart >= 1500) {
                 text.dispose();
                 characterState = CharacterState.IS_SITTING;
@@ -87,16 +87,16 @@ public class CharacterView extends BaseView {
             }
         }
         else if (characterState == CharacterState.IS_SITTING) {
-            batch.draw(sittingTextureList.get((int) (frameCounter * frameMultiplexer)),
-                    x, y, width, height);
             frameCounter = (int) ((frameCounter + 1) %
                     (sittingTextureList.size() / frameMultiplexer));
+            batch.draw(sittingTextureList.get((int) (frameCounter * frameMultiplexer)),
+                    x, y, width, height);
         }
         else if (characterState == CharacterState.IS_WALKING_RIGHT) {
-            batch.draw(walkingRightTextureList.get((int) (frameCounter * frameMultiplexer)),
-                    x, y, width, height);
             frameCounter = (int) ((frameCounter + 1) %
                     (walkingRightTextureList.size() / frameMultiplexer));
+            batch.draw(walkingRightTextureList.get((int) (frameCounter * frameMultiplexer)),
+                    x, y, width, height);
         }
     }
 
@@ -133,6 +133,7 @@ public class CharacterView extends BaseView {
                 && glass.isStopped && characterState == CharacterState.IS_SITTING
                 && neededDrink == glass.drink) {
             characterState = CharacterState.IS_WALKING_RIGHT;
+            sitPlace.isOccupied = false;
             return true;
         }
         return false;

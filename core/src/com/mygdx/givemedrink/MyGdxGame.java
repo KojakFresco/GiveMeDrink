@@ -11,6 +11,7 @@ import com.mygdx.givemedrink.screens.AboutScreen;
 import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.screens.MenuScreen;
 import com.mygdx.givemedrink.screens.SettingsScreen;
+import com.mygdx.givemedrink.screens.SplashScreen;
 import com.mygdx.givemedrink.utils.FontHelper;
 import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.MemoryHelper;
@@ -24,6 +25,7 @@ public class MyGdxGame extends Game {
 
 	public static CharacterAnimations characterAnimations;
 
+	public SplashScreen splashScreen;
 	public MenuScreen menuScreen;
 	public AboutScreen aboutScreen;
 	public SettingsScreen settingsScreen;
@@ -47,12 +49,14 @@ public class MyGdxGame extends Game {
 		titleFont = new FontHelper(100,
 				"fonts/big_8.ttf", Color.WHITE);
 
+
 		menuScreen = new MenuScreen(this);
+		splashScreen = new SplashScreen(this);
 		aboutScreen = new AboutScreen(this);
 		settingsScreen = new SettingsScreen(this);
 		gameScreen = new GameScreen(this);
 
-		setScreen(menuScreen);
+		setScreen(splashScreen);
 
 		SoundHelper.setMusicVolume(MemoryHelper.loadMusicVolume());
 
