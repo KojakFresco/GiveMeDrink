@@ -42,22 +42,30 @@ public class MenuScreen extends ScreenAdapter {
             exitButtonAnimation.add("tiles/buttons/exit/exit" + i + ".png");
 
 
-        ImageView gameName = new ImageView(0, Gdx.graphics.getHeight() - 550,
-                1400, 350,
+        ImageView gameName = new ImageView(0, 540,
+                GameSettings.SCREEN_WIDTH * 7 / 10, GameSettings.SCREEN_HEIGHT / 3,
                 "icons/logo.png");
 
         ImageView table = new ImageView(0, 0,
-                Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 400,
+                GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT * 5 / 8,
                 "icons/table.jpeg");
 
-        ButtonView playButton = new ButtonView(100, 250,
-                480, 180, startButtonAnimation);
-        ButtonView aboutButton = new ButtonView(580, 250,
-                480, 180, aboutButtonAnimation);
-        ButtonView settingsButton = new ButtonView(1060, 250,
-                480, 180, settingsButtonAnimation);
-        ButtonView exitButton = new ButtonView(1540, 250,
-                480, 180, exitButtonAnimation);
+        ButtonView playButton = new ButtonView(
+                GameSettings.SCREEN_WIDTH / 15, GameSettings.SCREEN_HEIGHT / 5,
+                GameSettings.SCREEN_WIDTH / 5, GameSettings.SCREEN_HEIGHT / 6,
+                startButtonAnimation);
+        ButtonView aboutButton = new ButtonView(
+                GameSettings.SCREEN_WIDTH * 4 / 15, GameSettings.SCREEN_HEIGHT / 5,
+                GameSettings.SCREEN_WIDTH / 5, GameSettings.SCREEN_HEIGHT / 6,
+                aboutButtonAnimation);
+        ButtonView settingsButton = new ButtonView(
+                GameSettings.SCREEN_WIDTH * 7 / 15, GameSettings.SCREEN_HEIGHT / 5,
+                GameSettings.SCREEN_WIDTH / 5, GameSettings.SCREEN_HEIGHT / 6,
+                settingsButtonAnimation);
+        ButtonView exitButton = new ButtonView(
+                GameSettings.SCREEN_WIDTH * 10 / 15, GameSettings.SCREEN_HEIGHT / 5,
+                GameSettings.SCREEN_WIDTH / 5, GameSettings.SCREEN_HEIGHT / 6,
+                exitButtonAnimation);
 
         playButton.setOnClickListener(onPlayButtonClicked);
         aboutButton.setOnClickListener(onAboutButtonClicked);
@@ -86,6 +94,9 @@ public class MenuScreen extends ScreenAdapter {
 
         handleInput();
 
+        myGdxGame.camera.update();
+        myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
+
         ScreenUtils.clear(0, 0, 0, 1);
 
         myGdxGame.batch.begin();
@@ -95,10 +106,15 @@ public class MenuScreen extends ScreenAdapter {
         myGdxGame.batch.end();
     }
 
+    @Override
+    public void resize(int width, int height) {
+        myGdxGame.viewport.update(width, height, true);
+    }
+
     public void handleInput() {
         if (Gdx.input.justTouched()) {
             myGdxGame.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            myGdxGame.touch = myGdxGame.camera.unproject(myGdxGame.touch);
+            myGdxGame.touch = myGdxGame.viewport.unproject(myGdxGame.touch);
 
             System.out.println(myGdxGame.touch.x);
             for (BaseView view : viewArray)
@@ -110,6 +126,7 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.gameScreen);
+            SoundHelper.playButtonSound();
         }
     };
 
@@ -117,6 +134,7 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.aboutScreen);
+            SoundHelper.playButtonSound();
         }
     };
 
@@ -124,6 +142,7 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.settingsScreen);
+            SoundHelper.playButtonSound();
         }
     };
 
@@ -131,6 +150,7 @@ public class MenuScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             Gdx.app.exit();
+            SoundHelper.playButtonSound();
         }
     };
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.GameSettings;
+import com.mygdx.givemedrink.utils.SoundHelper;
 import com.mygdx.givemedrink.views.BackgroundView;
 import com.mygdx.givemedrink.views.BaseView;
 import com.mygdx.givemedrink.views.ButtonView;
@@ -14,7 +15,6 @@ import com.mygdx.givemedrink.views.LabelView;
 import java.util.ArrayList;
 
 public class AboutScreen extends ScreenAdapter {
-    //TODO: make aboutScreen work
     MyGdxGame myGdxGame;
 
     ArrayList<BaseView> viewArray;
@@ -29,19 +29,24 @@ public class AboutScreen extends ScreenAdapter {
 
         BackgroundView background = new BackgroundView("icons/background.png");
         ImageView table = new ImageView(0, 0,
-                Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 400,
+                GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT - 400,
                 "icons/table.jpeg");
 
-        ButtonView backButton = new ButtonView(100, 510, 150, 160,
+        ButtonView backButton = new ButtonView(
+                GameSettings.SCREEN_WIDTH / 25, GameSettings.SCREEN_HEIGHT * 19 / 40,
+                GameSettings.SCREEN_WIDTH / 15, GameSettings.SCREEN_HEIGHT / 7,
                 backButtonAnimation);
-        LabelView educationTitle = new LabelView(0, 550, MyGdxGame.titleFont.bitmapFont,
+        LabelView educationTitle = new LabelView(0, GameSettings.SCREEN_HEIGHT / 2,
+                MyGdxGame.titleFont.bitmapFont,
                 "Education");
-        LabelView aboutText = new LabelView(30, 50, MyGdxGame.talkFont.bitmapFont,
-                        "You are a bartender.\nServe drinks that were ordered by rotating\n" +
-                                "your phone to the right and stop drinks\nfrom moving by rotating" +
-                                "your phone to\nthe left. Throw bad drinks off the table,\nbut" +
-                                "don't do that with the right ones.\nYou can make 5 mistakes" +
-                                " before you lose.");
+        LabelView aboutText = new LabelView(
+                GameSettings.SCREEN_HEIGHT * 30 / 1080, GameSettings.SCREEN_WIDTH * 50 / 2306,
+                MyGdxGame.talkFont.bitmapFont,
+                "You are a bartender.\nServe drinks that were ordered by rotating\n" +
+                        "your phone to the right and stop drinks\nfrom moving by rotating" +
+                        "your phone to\nthe left. Throw bad drinks off the table,\nbut" +
+                        "don't do that with the right ones.\nYou can make 5 mistakes" +
+                        " before you lose.");
 
         backButton.setOnClickListener(onBackButtonClicked);
 
@@ -59,6 +64,9 @@ public class AboutScreen extends ScreenAdapter {
 
         handleInput();
 
+        myGdxGame.camera.update();
+        myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
+
         ScreenUtils.clear(0, 0, 0, 1);
 
         myGdxGame.batch.begin();
@@ -66,6 +74,11 @@ public class AboutScreen extends ScreenAdapter {
         for (BaseView view : viewArray) view.draw(myGdxGame.batch);
 
         myGdxGame.batch.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        myGdxGame.viewport.update(width, height, true);
     }
 
     public void handleInput() {
@@ -82,6 +95,7 @@ public class AboutScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.menuScreen);
+            SoundHelper.playButtonSound();
         }
     };
 }

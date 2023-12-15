@@ -3,6 +3,7 @@ package com.mygdx.givemedrink.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.givemedrink.utils.GameSettings;
 
 public class BaseView extends InputAdapter {
 
@@ -40,7 +41,7 @@ public class BaseView extends InputAdapter {
     }
 
     public void alignCenter() {
-        x = Gdx.graphics.getWidth() / 2 - width / 2;
+        x = GameSettings.SCREEN_WIDTH / 2 - width / 2;
     }
 
     public void dispose() {}

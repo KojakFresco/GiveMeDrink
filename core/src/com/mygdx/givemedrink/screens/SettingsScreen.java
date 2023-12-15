@@ -36,23 +36,34 @@ public class SettingsScreen extends ScreenAdapter {
 
         BackgroundView background = new BackgroundView("icons/background.png");
         ImageView table = new ImageView(0, 0,
-                Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 400,
+                GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT * 5 / 8,
                 "icons/table.jpeg");
 
-        ButtonView backButton = new ButtonView(100, 510, 150, 160,
+        ButtonView backButton = new ButtonView(
+                GameSettings.SCREEN_WIDTH / 25, GameSettings.SCREEN_HEIGHT * 19 / 40,
+                GameSettings.SCREEN_WIDTH / 15, GameSettings.SCREEN_HEIGHT / 7,
                 backButtonAnimation);
 
-        LabelView settingsTitle = new LabelView(0, 550, MyGdxGame.titleFont.bitmapFont,
+        LabelView settingsTitle = new LabelView(0, GameSettings.SCREEN_HEIGHT / 2,
+                MyGdxGame.titleFont.bitmapFont,
                 "Settings");
 
-        LabelView musicText = new LabelView(100, 300, MyGdxGame.talkFont.bitmapFont,
+        LabelView musicText = new LabelView(
+                GameSettings.SCREEN_WIDTH * 11 / 40, GameSettings.SCREEN_HEIGHT * 7 / 24,
+                MyGdxGame.talkFont.bitmapFont,
                 "Music");
-        musicSlider = new SliderView(400, 250, 750, 150,
+        musicSlider = new SliderView(
+                GameSettings.SCREEN_WIDTH * 2 / 5, GameSettings.SCREEN_HEIGHT * 23 / 98,
+                GameSettings.SCREEN_WIDTH / 3, GameSettings.SCREEN_HEIGHT / 7,
                 MemoryHelper.loadMusicVolume(), myGdxGame.camera);
 
-        LabelView soundsText = new LabelView(80, 100, MyGdxGame.talkFont.bitmapFont,
+        LabelView soundsText = new LabelView(
+                GameSettings.SCREEN_WIDTH * 25 / 97, GameSettings.SCREEN_HEIGHT * 5 / 48,
+                MyGdxGame.talkFont.bitmapFont,
                 "Sounds");
-        soundsSlider = new SliderView(400, 50, 750, 150,
+        soundsSlider = new SliderView(
+                GameSettings.SCREEN_WIDTH * 2 / 5, GameSettings.SCREEN_HEIGHT * 5 / 98,
+                GameSettings.SCREEN_WIDTH / 3, GameSettings.SCREEN_HEIGHT / 7,
                 MemoryHelper.loadSoundsVolume(), myGdxGame.camera);
 
         backButton.setOnClickListener(onBackButtonClicked);
@@ -90,6 +101,9 @@ public class SettingsScreen extends ScreenAdapter {
 
         handleInput();
 
+        myGdxGame.camera.update();
+        myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
+
         ScreenUtils.clear(0, 0, 0, 1);
 
         myGdxGame.batch.begin();
@@ -113,6 +127,7 @@ public class SettingsScreen extends ScreenAdapter {
         @Override
         public void onClick() {
             myGdxGame.setScreen(myGdxGame.menuScreen);
+            SoundHelper.playButtonSound();
         }
     };
 

@@ -16,7 +16,7 @@ import com.mygdx.givemedrink.utils.SoundHelper;
 import java.util.ArrayList;
 
 public class CharacterView extends BaseView {
-
+    //TODO: the-same mechanics
     CharacterState characterState;
     public SitPlace sitPlace;
     public Drink neededDrink;
@@ -39,7 +39,7 @@ public class CharacterView extends BaseView {
     double frameMultiplexer;
 
     public CharacterView() {
-        super(Gdx.graphics.getWidth(), GameSettings.FLOOR_HEIGHT, 400, 700);
+        super(GameSettings.SCREEN_WIDTH, GameSettings.FLOOR_HEIGHT, 400, 700);
 
         walkingLeftTextureList = new ArrayList<>();
         askingTextureList = new ArrayList<>();
@@ -60,11 +60,10 @@ public class CharacterView extends BaseView {
         sitPlace = SitPlace.randomPlace();
         neededDrink = Drink.randomDrink();
         frameCounter = 0;
-        frameMultiplexer = (double) GameSettings.CHARACTER_ANIMATION_FPS / 60;
+        frameMultiplexer = (double) GameSettings.CHARACTER_ANIMATION_FPS / Gdx.graphics.getFramesPerSecond();
         orderAccepted = false;
         isOut = false;
         sitPlace.isOccupied = true;
-
     }
 
     @Override
@@ -81,7 +80,7 @@ public class CharacterView extends BaseView {
                     x, y, width, height);
             frameCounter = (int) ((frameCounter + 1) %
                     (askingTextureList.size() / frameMultiplexer));
-            if (TimeUtils.millis() - talkStart >= 2000) {
+            if (TimeUtils.millis() - talkStart >= 1500) {
                 text.dispose();
                 characterState = CharacterState.IS_SITTING;
                 frameCounter = 0;
@@ -101,9 +100,13 @@ public class CharacterView extends BaseView {
         }
     }
 
-    public void move() {
+    public void setFrameMultiplexer(int fps) {
+        frameMultiplexer = (double) GameSettings.CHARACTER_ANIMATION_FPS / fps;
+    }
+
+    public void move(float delta) {
         if (characterState == CharacterState.IS_WALKING_LEFT) {
-            x -= GameSettings.CHARACTER_SPEED;
+            x -= GameSettings.CHARACTER_SPEED * delta / 0.016;
             if (x <= sitPlace.placeX) {
                 characterState = CharacterState.IS_ASKING;
                 frameCounter = 0;
@@ -116,8 +119,8 @@ public class CharacterView extends BaseView {
 
         }
         else if (characterState == CharacterState.IS_WALKING_RIGHT) {
-            x += GameSettings.CHARACTER_SPEED;
-            if (x >= Gdx.graphics.getWidth()) isOut = true;
+            x += GameSettings.CHARACTER_SPEED * delta / 0.016;
+            if (x >= GameSettings.SCREEN_WIDTH) isOut = true;
         }
     }
 

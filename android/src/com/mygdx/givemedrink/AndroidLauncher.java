@@ -10,7 +10,7 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-
+		config.useWakelock = true;
 		config.useGyroscope = false;
 		config.useAccelerometer = true;
 		config.useCompass = false;

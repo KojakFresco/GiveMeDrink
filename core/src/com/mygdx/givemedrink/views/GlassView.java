@@ -36,21 +36,23 @@ public class GlassView extends BaseView {
         batch.draw(texture, x, y, width, height);
     }
 
-    public void move(double accelerometerY) {
+    public void move(double accelerometerY, float delta) {
         alpha = accelerometerY * Math.PI / 20;
         if (!isFalling && !isStopped) {
             if (alpha >= Math.PI / 20)
                 velocityX += 9.8 *
-                        (Math.sin(alpha) - GameScreen.frictionFactor * Math.cos(alpha)) / 60;
+                        (Math.sin(alpha)
+                                - GameScreen.frictionFactor * Math.cos(alpha)) / 60 * delta / 0.016;
             else if (alpha < 0 && velocityX > 0)
                 velocityX += 9.8 *
-                        (Math.sin(alpha) + GameScreen.frictionFactor * Math.cos(alpha)) / 60;
+                        (Math.sin(alpha)
+                                + GameScreen.frictionFactor * Math.cos(alpha)) / 50 * delta / 0.016;
             else if (velocityX < 0) {
                 velocityX = 0;
                 isStopped = true;
             }
         }
-        if (((x >= Gdx.graphics.getWidth() - 270) || isFalling) && y >= 0) {
+        if (((x >= GameSettings.SCREEN_WIDTH - 270) || isFalling) && y >= 0) {
             velocityY -= 5;
             isFalling = true;
         } else {
@@ -63,6 +65,6 @@ public class GlassView extends BaseView {
     }
 
     public boolean isOut() {
-        return x >= Gdx.graphics.getWidth();
+        return x >= GameSettings.SCREEN_WIDTH;
     }
 }

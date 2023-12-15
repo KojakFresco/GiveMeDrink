@@ -38,15 +38,10 @@ public class ButtonView extends BaseView {
             frameCounter = frameCounter + 1;
             if ((int) (frameCounter * frameMultiplexer) >= textureList.size()) {
                 onClickListener.onClick();
-                SoundHelper.playButtonSound();
                 isPressed = false;
                 frameCounter = 0;
             }
         }
-    }
-
-    public void alignCenter() {
-        x = (Gdx.graphics.getWidth() - width) / 2;
     }
 
     @Override

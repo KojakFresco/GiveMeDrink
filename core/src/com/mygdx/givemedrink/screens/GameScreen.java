@@ -1,5 +1,7 @@
 package com.mygdx.givemedrink.screens;
 
+import static java.lang.Thread.sleep;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.math.MathUtils;
@@ -27,7 +29,7 @@ import java.util.Random;
 import java.util.TimerTask;
 
 public class GameScreen extends ScreenAdapter {
-
+    //TODO: add high score
     MyGdxGame myGdxGame;
 
     public GameState gameState;
@@ -140,10 +142,10 @@ public class GameScreen extends ScreenAdapter {
                 "icons/table.jpeg");
 
         counterLabel = new NumberLabelView(
-                0, Gdx.graphics.getHeight() - 60,
+                0, 1000,
                 MyGdxGame.talkFont.bitmapFont, "SCORE: ");
         timerLabel = new NumberLabelView(
-                Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() - 60,
+                GameSettings.SCREEN_WIDTH - 500, GameSettings.SCREEN_HEIGHT - 60,
                 MyGdxGame.talkFont.bitmapFont, "");
 
         playViewArray.add(background);
@@ -192,10 +194,11 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
 
-            glassLogic();
+            glassLogic(delta);
 
             for (CharacterView character : charactersArray) {
-                character.move();
+                character.setFrameMultiplexer(Gdx.graphics.getFramesPerSecond());
+                character.move(delta);
                 if (!character.orderAccepted && character.isSitting()) {
                     neededGlassesArray.add(character.neededDrink);
                     character.orderAccepted = true;
@@ -212,13 +215,20 @@ public class GameScreen extends ScreenAdapter {
                     gameState = GameState.WON;
                     System.out.println("won");
                 }
-                else gameState = GameState.LOOSED;
+                else {
+                    gameState = GameState.LOOSED;
+                    SoundHelper.playLooseSound();
+                    SoundHelper.stopMusic(1);
+                }
             }
 
         }
         else if (gameState == GameState.ON_PAUSED) handleInput(pauseViewArray);
         else if (gameState == GameState.WON) handleInput(winViewArray);
         else if (gameState == GameState.LOOSED) handleInput(looseViewArray);
+
+        myGdxGame.camera.update();
+        myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
 
         ScreenUtils.clear(0.3f,0.2f,0.2f,1);
 
@@ -236,6 +246,11 @@ public class GameScreen extends ScreenAdapter {
         myGdxGame.batch.end();
     }
 
+    @Override
+    public void resize(int width, int height) {
+        myGdxGame.viewport.update(width, height, true);
+    }
+
     public void handleInput(ArrayList<BaseView> viewArray) {
         if (Gdx.input.justTouched()) {
             myGdxGame.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -247,7 +262,7 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    public void glassLogic() {
+    public void glassLogic(float delta) {
         if (glass != null) {
 
             if (glass.isStopped) {
@@ -288,7 +303,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
 
-        if (playViewArray.contains(glass) && glass != null) glass.move(accelerometerY);
+        if (playViewArray.contains(glass) && glass != null) glass.move(accelerometerY, delta);
         else if (neededGlassesArray.size() != 0) {
 
             int chance = random.nextInt(100);
@@ -304,6 +319,7 @@ public class GameScreen extends ScreenAdapter {
             );
             glassGot = false;
             playViewArray.add(glass);
+            SoundHelper.playGlassSpawnSound();
         }
     }
 
@@ -320,12 +336,14 @@ public class GameScreen extends ScreenAdapter {
             if (gameState == GameState.IS_PLAYING) {
                 gameState = GameState.ON_PAUSED;
                 pauseTimer = TimeUtils.millis();
+                SoundHelper.playPauseSound();
             }
             else if (gameState == GameState.ON_PAUSED) {
                 pauseTimer = TimeUtils.millis() - pauseTimer;
                 spawnTimer += pauseTimer;
                 gameStart += pauseTimer;
                 gameState = GameState.IS_PLAYING;
+                SoundHelper.playMusic(1);
             }
         }
     };
@@ -337,6 +355,7 @@ public class GameScreen extends ScreenAdapter {
             playViewArray.clear();
             neededGlassesArray.clear();
             charactersArray.clear();
+            SoundHelper.playButtonSound();
         }
     };
 
@@ -348,6 +367,7 @@ public class GameScreen extends ScreenAdapter {
             neededGlassesArray.clear();
             charactersArray.clear();
             SoundHelper.stopMusic(1);
+            SoundHelper.playButtonSound();
             show();
         }
     };

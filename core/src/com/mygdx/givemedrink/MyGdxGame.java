@@ -12,6 +12,7 @@ import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.screens.MenuScreen;
 import com.mygdx.givemedrink.screens.SettingsScreen;
 import com.mygdx.givemedrink.utils.FontHelper;
+import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.MemoryHelper;
 import com.mygdx.givemedrink.utils.SoundHelper;
 
@@ -35,14 +36,16 @@ public class MyGdxGame extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		touch = new Vector3();
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new OrthographicCamera(2306, 1080);
 		camera.setToOrtho(false);
-		viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+		viewport = new FitViewport(2306, 1080, camera);
 
 		characterAnimations = new CharacterAnimations();
 
-		talkFont = new FontHelper(50, "fonts/press-start-k.ttf", Color.WHITE);
-		titleFont = new FontHelper(100, "fonts/big_8.ttf", Color.WHITE);
+		talkFont = new FontHelper(50,
+				"fonts/press-start-k.ttf", Color.WHITE);
+		titleFont = new FontHelper(100,
+				"fonts/big_8.ttf", Color.WHITE);
 
 		menuScreen = new MenuScreen(this);
 		aboutScreen = new AboutScreen(this);

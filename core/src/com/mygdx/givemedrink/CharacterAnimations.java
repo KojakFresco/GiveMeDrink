@@ -39,6 +39,7 @@ public class CharacterAnimations {
         ArrayList<String> walterAskingList = new ArrayList<>();
         ArrayList<String> walterSitList = new ArrayList<>();
         ArrayList<String> walterWalkRightList = new ArrayList<>();
+        ArrayList<Sound> walterSoundsList = new ArrayList<>();
 
         ArrayList<ArrayList<String>> mudriyRusPathsList = new ArrayList<>();
 
@@ -54,6 +55,7 @@ public class CharacterAnimations {
         ArrayList<String> boyAskingList = new ArrayList<>();
         ArrayList<String> boySitList = new ArrayList<>();
         ArrayList<String> boyWalkRightList = new ArrayList<>();
+        ArrayList<Sound> boySoundsList = new ArrayList<>();
 
         for (int i = 0; i < 2; ++i)
             character1WalkLeftList.add("tiles/characters/test/test" + i + ".png");
@@ -84,6 +86,9 @@ public class CharacterAnimations {
             walterSitList.add("tiles/characters/walter/walter" + i + ".png");
         for (int i = 0; i < 2; ++i)
             walterWalkRightList.add("tiles/characters/walter/walterOut" + i + ".png");
+        for (int i = 0; i < 3; ++i)
+            walterSoundsList.add(Gdx.audio.newSound(
+                    Gdx.files.internal("sounds/walterSound" + i + ".mp3")));
 
         for (int i = 0; i < 2; ++i)
             mudriyRusWalkLeftList.add("tiles/characters/mudriyRus/mudriyRus" + i + ".png");
@@ -101,9 +106,13 @@ public class CharacterAnimations {
             boyWalkLeftList.add("tiles/characters/boy/boy" + i + ".png");
         for (int i = 2; i > 0; --i)
             boyAskingList.add("tiles/characters/boy/boy" + i + ".png");
-        boySitList.add("tiles/characters/boy/boy2.png");
+        for (int i = 3; i > 1; --i)
+            boySitList.add("tiles/characters/boy/boy" + i + ".png");
         for (int i = 0; i < 2; ++i)
             boyWalkRightList.add("tiles/characters/boy/boyOut" + i + ".png");
+        for (int i = 0; i < 3; ++i)
+            boySoundsList.add(Gdx.audio.newSound(
+                    Gdx.files.internal("sounds/boySound" + i + ".mp3")));
 
 
         character1PathsList.add(character1WalkLeftList);
@@ -126,7 +135,7 @@ public class CharacterAnimations {
         walterPathsList.add(walterAskingList);
         walterPathsList.add(walterSitList);
         walterPathsList.add(walterWalkRightList);
-        characterSoundsList.add(character1SoundsList);
+        characterSoundsList.add(walterSoundsList);
 
         charactersPathsList.add(walterPathsList);
 
@@ -142,7 +151,7 @@ public class CharacterAnimations {
         boyPathsList.add(boyAskingList);
         boyPathsList.add(boySitList);
         boyPathsList.add(boyWalkRightList);
-        characterSoundsList.add(character1SoundsList);
+        characterSoundsList.add(boySoundsList);
 
         charactersPathsList.add(boyPathsList);
     }

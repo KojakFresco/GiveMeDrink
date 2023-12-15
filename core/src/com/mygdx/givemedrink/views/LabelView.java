@@ -38,7 +38,7 @@ public class LabelView extends BaseView {
     }
 
     @Override
-    public void draw(SpriteBatch spriteBatch) {
-        font.draw(spriteBatch, message, x, y);
+    public void draw(SpriteBatch batch) {
+        font.draw(batch, message, x, y);
     }
 }
