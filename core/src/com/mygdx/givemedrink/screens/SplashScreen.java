@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.GameSettings;
+import com.mygdx.givemedrink.views.BackgroundView;
+import com.mygdx.givemedrink.views.ImageView;
 
 public class SplashScreen extends ScreenAdapter {
 
@@ -15,8 +17,16 @@ public class SplashScreen extends ScreenAdapter {
     int number;
     int frameCounter;
     Texture texture;
+    BackgroundView background;
+    ImageView table;
     public SplashScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
+
+        background = new BackgroundView("icons/background.png");
+
+        table = new ImageView(0, 0,
+                GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT * 5 / 8,
+                "icons/table.jpeg");
 
         number = 0;
         frameCounter = 0;
@@ -25,9 +35,9 @@ public class SplashScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         frameCounter += 1;
-        if ((int) (frameCounter / 8 * delta / 0.016) > number)
-            number = (int) (frameCounter / 8 * delta / 0.016);
-        if (number >= 8)
+        if ((int) (frameCounter / 9 * delta / 0.016) > number)
+            number = (int) (frameCounter / 9 * delta / 0.016);
+        if (number > 7)
             myGdxGame.setScreen(myGdxGame.menuScreen);
         else if (number < 6)
             texture = new Texture("tiles/splashScreen/splash" + number + ".png");
@@ -36,7 +46,10 @@ public class SplashScreen extends ScreenAdapter {
 
         myGdxGame.batch.begin();
 
-        myGdxGame.batch.draw(texture, 480, 510, 1550, 570);
+        background.draw(myGdxGame.batch);
+        table.draw(myGdxGame.batch);
+        myGdxGame.batch.draw(texture, 520, 530,
+                1430, 550);
 
         myGdxGame.batch.end();
     }
