@@ -5,20 +5,21 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.mygdx.givemedrink.screens.GameScreen;
 import com.mygdx.givemedrink.utils.CharacterAnimations;
 import com.mygdx.givemedrink.MyGdxGame;
 import com.mygdx.givemedrink.utils.CharacterState;
 import com.mygdx.givemedrink.utils.GameSettings;
 import com.mygdx.givemedrink.utils.Drink;
-import com.mygdx.givemedrink.utils.SitPlace;
 import com.mygdx.givemedrink.utils.SoundHelper;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 
 public class CharacterView extends BaseView {
     //TODO: (optionally) the-same mechanics
     CharacterState characterState;
-    public SitPlace sitPlace;
+    public AbstractMap.SimpleEntry<Integer, Integer> sitPlace;
     public Drink neededDrink;
     public boolean orderAccepted;
     public boolean isOut;
@@ -57,13 +58,13 @@ public class CharacterView extends BaseView {
                 CharacterAnimations.getIndexOfCharacter(characterPathList)));
 
         characterState = CharacterState.IS_WALKING_LEFT;
-        sitPlace = SitPlace.randomPlace();
+        sitPlace = GameScreen.randomPlace();
         neededDrink = Drink.randomDrink();
         frameCounter = 0;
         frameMultiplexer = (double) GameSettings.CHARACTER_ANIMATION_FPS / Gdx.graphics.getFramesPerSecond();
         orderAccepted = false;
         isOut = false;
-        sitPlace.isOccupied = true;
+        for (boolean i :GameScreen.placesOccupation) System.out.println(i);
     }
 
     @Override
@@ -107,7 +108,7 @@ public class CharacterView extends BaseView {
     public void move(float delta) {
         if (characterState == CharacterState.IS_WALKING_LEFT) {
             x -= GameSettings.CHARACTER_SPEED * delta / 0.016;
-            if (x <= sitPlace.placeX) {
+            if (x <= sitPlace.getValue()) {
                 characterState = CharacterState.IS_ASKING;
                 frameCounter = 0;
                 talkStart = TimeUtils.millis();
@@ -133,7 +134,7 @@ public class CharacterView extends BaseView {
                 && glass.isStopped && characterState == CharacterState.IS_SITTING
                 && neededDrink == glass.drink) {
             characterState = CharacterState.IS_WALKING_RIGHT;
-            sitPlace.isOccupied = false;
+            GameScreen.placesOccupation[sitPlace.getKey()] = false;
             return true;
         }
         return false;
@@ -143,6 +144,6 @@ public class CharacterView extends BaseView {
     public void dispose() {
         for (Texture texture : walkingLeftTextureList) texture.dispose();
         for (Texture texture : sittingTextureList) texture.dispose();
-        sitPlace.isOccupied = false;
+        GameScreen.placesOccupation[sitPlace.getKey()] = false;
     }
 }

@@ -20,6 +20,7 @@ import com.mygdx.givemedrink.views.NumberLabelView;
 import com.mygdx.givemedrink.views.GlassView;
 import com.mygdx.givemedrink.views.ImageView;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -47,6 +48,9 @@ public class GameScreen extends ScreenAdapter {
     NumberLabelView counterLabel;
     NumberLabelView timerLabel;
 
+    public static boolean[] placesOccupation;
+    public static int[] placesX;
+
     ArrayList<BaseView> playViewArray;
     ArrayList<Drink> neededGlassesArray;
     ArrayList<CharacterView> charactersArray;
@@ -64,6 +68,11 @@ public class GameScreen extends ScreenAdapter {
         this.myGdxGame = myGdxGame;
 
         random = new Random();
+
+        placesOccupation = new boolean[]{false, false, false};
+        placesX = new int[]{
+                GameSettings.FIRST_SIT_X, GameSettings.SECOND_SIT_X, GameSettings.THIRD_SIT_X
+        };
 
         playViewArray = new ArrayList<>();
         pauseViewArray = new ArrayList<>();
@@ -285,7 +294,6 @@ public class GameScreen extends ScreenAdapter {
                         neededGlassesArray.remove(glass.drink);
                         playViewArray.remove(glass);
                         glass.dispose();
-                        character.sitPlace.isOccupied = false;
                         glassGot = true;
                         break;
                     }
@@ -340,6 +348,22 @@ public class GameScreen extends ScreenAdapter {
         CharacterView character = new CharacterView();
         charactersArray.add(character);
         playViewArray.add(1, character);
+    }
+
+    public static AbstractMap.SimpleEntry<Integer, Integer> randomPlace() {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < 3; ++i) {
+            if (!placesOccupation[i]) {
+                System.out.println("occupat:" + placesOccupation[i]);
+                indexes.add(i);
+                System.out.println("index1:" + i);
+            }
+        }
+        System.out.println("size:" + indexes.size());
+        int index = MathUtils.random(indexes.size() - 1);
+        System.out.println("index: " + indexes.get(index));
+        GameScreen.placesOccupation[indexes.get(index)] = true;
+        return new AbstractMap.SimpleEntry<>(indexes.get(index), placesX[indexes.get(index)]);
     }
 
     BaseView.OnClickListener onPauseButtonClicked = new BaseView.OnClickListener() {
