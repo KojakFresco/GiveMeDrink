@@ -354,14 +354,10 @@ public class GameScreen extends ScreenAdapter {
         ArrayList<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
             if (!placesOccupation[i]) {
-                System.out.println("occupat:" + placesOccupation[i]);
                 indexes.add(i);
-                System.out.println("index1:" + i);
             }
         }
-        System.out.println("size:" + indexes.size());
         int index = MathUtils.random(indexes.size() - 1);
-        System.out.println("index: " + indexes.get(index));
         GameScreen.placesOccupation[indexes.get(index)] = true;
         return new AbstractMap.SimpleEntry<>(indexes.get(index), placesX[indexes.get(index)]);
     }

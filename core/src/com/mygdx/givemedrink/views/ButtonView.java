@@ -1,11 +1,9 @@
 package com.mygdx.givemedrink.views;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.givemedrink.utils.GameSettings;
-import com.mygdx.givemedrink.utils.SoundHelper;
 
 import java.util.ArrayList;
 
